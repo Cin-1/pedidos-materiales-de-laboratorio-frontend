@@ -12,8 +12,18 @@ import RequestsView from "./views/requests";
 import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
 import CardRequest from "./Components/card";
+import Dropdown from "./Components/dropdown";
 
 function App() {
+  const mockData = {
+    title: "Ejemplo de Título",
+    icon: true,
+    arrow: true,
+    description: "Esta es una descripción de ejemplo.",
+    stock: "10 unidades",
+    repair: "2 unidades",
+    clase: "Clase A",
+  };
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -23,15 +33,53 @@ function App() {
             index
             path="/test"
             element={
-              <CardRequest
-                title="Pedido #1"
-                banner="Pendiente"
-                date="26/04/06"
-                laboratory="65"
-                building="Malvinas"
-                proffesor="Cin"
-                students="kamakdn"
-              />
+              <div style={{ display: "flex", flexDirection: "column", gap: "2rem", paddingTop: "2rem" }}>
+                {/* <CardRequest
+                  title="Pedido #1"
+                  banner="Pendiente"
+                  date="26/04/06"
+                  laboratory="65"
+                  building="Malvinas"
+                  proffesor="Cin"
+                  students="kamakdn"
+                /> */}
+                <Dropdown
+                  title={mockData.title}
+                  icon={mockData.icon}
+                  desplegado={false}
+                  description={mockData.description}
+                  stock={mockData.stock}
+                  repair={mockData.repair}
+                  clase={mockData.clase}
+                />{" "}
+                <Dropdown
+                  title={mockData.title}
+                  icon={mockData.icon}
+                  desplegado={false}
+                  description={mockData.description}
+                  stock={mockData.stock}
+                  repair={mockData.repair}
+                  clase={mockData.clase}
+                />{" "}
+                <Dropdown
+                  title={mockData.title}
+                  icon={mockData.icon}
+                  desplegado={true}
+                  description={mockData.description}
+                  stock={mockData.stock}
+                  repair={mockData.repair}
+                  clase={mockData.clase}
+                />{" "}
+                <Dropdown
+                  title={mockData.title}
+                  icon={mockData.icon}
+                  desplegado={true}
+                  description={mockData.description}
+                  stock={mockData.stock}
+                  repair={mockData.repair}
+                  clase={mockData.clase}
+                />{" "}
+              </div>
             }
           />
 
