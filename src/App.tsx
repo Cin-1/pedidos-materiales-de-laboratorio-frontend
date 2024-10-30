@@ -24,6 +24,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
+          <Route path="/requests" element={<RequestsView />} />
+          
+
 
           {/* Component PrivateRoute will check for a valid JWT
            * and redirect to '/login' if there isn't one

@@ -5,7 +5,7 @@ const useAxios = (): { axiosInstance: AxiosInstance; updateAuthToken: (token: st
   const { authToken, login } = useAuth();
 
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000", // Replace with API base URL
+    baseURL: "http://localhost:3001", // Replace with API base URL
   });
 
   // Update the token in the interceptor
