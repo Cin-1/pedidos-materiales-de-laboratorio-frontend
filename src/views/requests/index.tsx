@@ -1,10 +1,28 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import CardRequest from "../../components/card";
 import MobileNav from "../../components/mobile-nav";
+import useRequestService from "../../services/request.service";
+import handlePromise from "../../utils/promise";
 
 export default function RequestsView(): ReactElement {
+  const [requestData, setRequestData] = useState(null);
+  const requestService = useRequestService();
+
+
+  useEffect(()=>{ 
+    const fetchRequests = async () => {
+      try {
+      const [requested, err] = await handlePromise(requestService.getRequests());
+      console.log(requested)
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchRequests();
+  } ,[requestService]);
 
   const onSearchResult = (input:string)=>{
     console.log({input})
@@ -18,34 +36,17 @@ export default function RequestsView(): ReactElement {
     searchCallback: onSearchResult
   }
 
-  const requesteds  = [{
-    title : "Bioquimica comision 25"
-    ,date : "24/7/1993"
-    ,laboratory :""
-    ,building :""
-    ,proffesor : ""
-    ,students : "Carlos Lombardi"
-    
-  },
-{
-    title : "Bioquimica comision 25"
-    ,date : "24/7/1993"
-    ,laboratory :""
-    ,building :""
-    ,proffesor : ""
-    ,students : "Carlos Lombardi"
-    
-  }]
+
 
   return <>
     <Header {...headerAttributes}></Header>
     <main>
       <div  className="body">
-              {requesteds.map((requested,index) =>
+             {/*  {requesteds.map((requested,index) =>
                 <div className="listElements">
                     <CardRequest {... requested} />  
                 </div>  
-              )}
+              )} */}
         </div>     
       </main>
       <MobileNav></MobileNav>
