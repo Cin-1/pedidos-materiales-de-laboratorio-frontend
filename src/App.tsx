@@ -18,10 +18,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
-          {/* Component PrivateRoute will check for a valid JWT
-           * and redirect to '/login' if there isn't one
-           * so every route that requires an auth user should be
-           * defined inside this route*/}
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
