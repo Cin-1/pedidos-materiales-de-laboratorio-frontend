@@ -5,24 +5,34 @@ import CardRequest from "../../components/card";
 import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
-
+import { Request } from "../../types/request";
+import { User } from "../../types/user";
+import  useUserService  from "../../services/user.service"
 export default function RequestsView(): ReactElement {
-  const [requestData, setRequestData] = useState(null);
+    
+  const [requestData, setRequestData] = useState<Request[]>([]);
   const requestService = useRequestService();
-
+ 
 
   useEffect(()=>{ 
     const fetchRequests = async () => {
+      const [requesteds, err] = await handlePromise(requestService.getRequests());      
       try {
-      const [requested, err] = await handlePromise(requestService.getRequests());
-      console.log(requested)
-
+        if (err)
+        {
+          throw(err)
+        }
+        
+        if(requesteds)
+        {
+          setRequestData(requesteds)
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchRequests();
-  } ,[requestService]);
+  } ,[]);
 
   const onSearchResult = (input:string)=>{
     console.log({input})
@@ -36,17 +46,23 @@ export default function RequestsView(): ReactElement {
     searchCallback: onSearchResult
   }
 
-
-
   return <>
     <Header {...headerAttributes}></Header>
     <main>
       <div  className="body">
-             {/*  {requesteds.map((requested,index) =>
-                <div className="listElements">
-                    <CardRequest {... requested} />  
-                </div>  
-              )} */}
+               {
+                requestData.map((requested,index) =>
+                  <div className="listElements">
+                      <CardRequest title={requested.description} 
+                      date={requested.usageDate.toString()} 
+                      laboratory={requested.labNumber?.toString() || ''} 
+                      building={requested.building || ''}
+                      proffesor={ requested.requestantUser} 
+                      students={requested.studentsNumber.toString()} 
+                      />  
+                  </div>  
+                )
+              } 
         </div>     
       </main>
       <MobileNav></MobileNav>
