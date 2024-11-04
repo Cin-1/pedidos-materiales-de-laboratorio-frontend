@@ -11,6 +11,8 @@ import  useUserService  from "../../services/user.service"
 export default function RequestsView(): ReactElement {
     
   const [requestData, setRequestData] = useState<Request[]>([]);
+  const [showedRequest, setShowedRequest] = useState<Request[]>([]);
+
   const requestService = useRequestService();
  
 
@@ -18,11 +20,11 @@ export default function RequestsView(): ReactElement {
     const fetchRequests = async () => {
       const [requesteds, err] = await handlePromise(requestService.getRequests());      
       try {
-        if (err)
-        {
-          throw(err)
+        if (err)  {throw(err)}
+        if(requesteds) {
+          setRequestData(requesteds);
+          setShowedRequest(requesteds);
         }
-        
         if(requesteds)
         {
           setRequestData(requesteds)
@@ -35,8 +37,9 @@ export default function RequestsView(): ReactElement {
   } ,[]);
 
   const onSearchResult = (input:string)=>{
-    console.log({input})
+    input ? setShowedRequest(requestData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedRequest(requestData);
   }
+
 
   const headerAttributes = {
     title: "pedidos",
@@ -51,7 +54,7 @@ export default function RequestsView(): ReactElement {
     <main>
       <div  className="body">
                {
-                requestData.map((requested,index) =>
+                showedRequest.map((requested,index) =>
                   <div className="listElements">
                       <CardRequest title={requested.description} 
                       date={requested.usageDate.toString()} 
