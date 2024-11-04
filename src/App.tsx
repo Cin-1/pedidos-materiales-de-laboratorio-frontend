@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
 import MaterialsView from "./views/Materials";
 import RequestsView from "./views/requests";
+import MaterialDetailsView from "./views/MaterialDetail";
 
 function App() {
   const [text, useText] = useState([]);
@@ -27,6 +28,8 @@ function App() {
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
               <Route path="/materials" element={<MaterialsView />} />
+              <Route path="/materials/:materialId" element={<MaterialDetailsView />} />
+              
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

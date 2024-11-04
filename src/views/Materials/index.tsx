@@ -8,8 +8,14 @@ import { Material } from "../../types/material";
 import { User } from "../../types/user";
 import  Dropdown  from "../../components/dropdown"
 import  useUserService  from "../../services/user.service"
+import { Fab } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from "react-router-dom";
+
+
 export default function MaterialsView(): ReactElement {
-    
+  
+  const navigate = useNavigate();
   const [materialData, setMaterialData] = useState<Material[]>([]);
   const [showedMaterial, setShowedMaterial] = useState<Material[]>([]);
   const [selectedid, setSelectedid] = useState<string>('');
@@ -59,13 +65,18 @@ export default function MaterialsView(): ReactElement {
                         repair= {m.inRepair?.toString() || ''}
                         clase= {m.type}
                         onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
-                        onEdition={() => alert("edicion de " + m._id)} 
+                        onEdition={() => navigate( m._id)} 
                       />  
               </div>
               ) 
               } 
         </div>  
       </main>
+      <div className="fbuttons">
+        <Fab color="primary" aria-label="add" >
+          <AddIcon />
+        </Fab>
+      </div>
       <MobileNav></MobileNav>
     </>;
 }
