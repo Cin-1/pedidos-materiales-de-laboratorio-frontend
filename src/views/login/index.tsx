@@ -1,7 +1,7 @@
 import React, { FormEvent, ReactElement, useState } from "react";
 import handlePromise from "../../utils/promise";
 import useAuthService from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles.scss";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/EmailOutlined";
@@ -12,13 +12,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 
-
 export default function Login(): ReactElement {
   const { login } = useAuthService();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
 
   const onLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -32,8 +30,6 @@ export default function Login(): ReactElement {
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
- 
-  
 
   const emailInputProps = {
     startAdornment: (
@@ -59,7 +55,7 @@ export default function Login(): ReactElement {
   };
 
   return (
-    <div className="container containerStyle" >
+    <div className="container containerStyle">
       <div className="banner bannerStyle">
         <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
         <img src="/img/scientist.png" alt="Cientifico de laboratorio" className="imageStyle" />

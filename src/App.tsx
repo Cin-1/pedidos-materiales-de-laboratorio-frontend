@@ -11,6 +11,7 @@ import PrivateRoute from "./components/private-route";
 import RequestsView from "./views/requests";
 import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
+import Register from "./views/register";
 
 function App() {
   const [text, useText] = useState([]);
@@ -20,6 +21,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
+          <Route index path="/register" element={<Register />} />
+
           <Route path="/requests" element={<RequestsView />} />
           {/**/}
           <Route element={<PrivateRoute />}>
