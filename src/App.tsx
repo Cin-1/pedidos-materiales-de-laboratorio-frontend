@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 /* Components */
@@ -13,11 +13,15 @@ import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
 
 function App() {
+  const [text, useText] = useState([]);
+
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
+          <Route path="/requests" element={<RequestsView />} />
+          {/**/}
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
