@@ -14,7 +14,6 @@ export default function MaterialsView(): ReactElement {
   const [showedMaterial, setShowedMaterial] = useState<Material[]>([]);
   const [selectedid, setSelectedid] = useState<string>('');
   const materialService = useMaterialService();
- 
 
   useEffect(()=>{ 
     const fetchMaterials = async () => {
@@ -42,11 +41,6 @@ export default function MaterialsView(): ReactElement {
     icon: 'material.svg',
     searchPlaceholder: 'Buscar Material',
     searchCallback: onSearchResult
-  }
-
-  function turnMaterialSelected(_id :string){
-    selectedid == _id ?  setSelectedid(""): setSelectedid(_id)
-
   }
 
   return <>
