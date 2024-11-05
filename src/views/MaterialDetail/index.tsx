@@ -69,18 +69,26 @@ export default function MaterialDetailView(): ReactElement {
     <main>
       <div  className="body">              
           <form onSubmit={onsubmit} className="formEndStyle">
-            <TextField
-              className="textFieldStyle"
-              variant="standard"
-              placeholder="Email"
-              type="text"
-              name="email"
-              
-              autoComplete="off"
-            />
+            
+            <TextField id="description" className="description" multiline  rows={4} label="description" variant="outlined" />
 
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
+              <Select 
+                className="description"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={"Suficiente"}
+                label="Stock"
+                onChange={handleChange}
+              >
+                <MenuItem value={'Suficiente'}>Suficiente</MenuItem>
+                <MenuItem value={'faltante'}>faltante</MenuItem>
+              </Select>
+            </FormControl>
+
+              <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -88,13 +96,16 @@ export default function MaterialDetailView(): ReactElement {
                 label="Age"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={'cm'}>cm</MenuItem>
+                <MenuItem value={'ml'}>ml</MenuItem>
+                <MenuItem value={'Copas mundiales'}>Copas mundiales</MenuItem>
+                <MenuItem value={'Dedos de Frente'}>Dedos de Frente</MenuItem>
               </Select>
             </FormControl>
+
+
             <Button type="submit" className="buttonStyle">
-              Iniciar Sesión
+              Grabar
             </Button>
             
           </form>

@@ -65,7 +65,7 @@ export default function MaterialsView(): ReactElement {
                         repair= {m.inRepair?.toString() || ''}
                         clase= {m.type}
                         onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
-                        onEdition={() => navigate( m._id)} 
+                        onEdition={() => navigate(m._id)} 
                       />  
               </div>
               ) 
