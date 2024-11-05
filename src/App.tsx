@@ -28,7 +28,7 @@ function App() {
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
               <Route path="/materials" element={<MaterialsView />} />
-              <Route path="/materials/:materialId" element={<MaterialDetailsView />} />
+              <Route path="/materials/:id" element={<MaterialDetailsView />} />
               
             </Route>
           </Route>
