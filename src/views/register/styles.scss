@@ -7,7 +7,6 @@ form {
   gap: 2em;
   background-color: rgba($color: #000000, $alpha: 0.2);
   padding: 20px;
-  border-radius: 5px;
 
   small {
     color: red;
@@ -20,11 +19,6 @@ form {
   width: 98vw;
   align-items: center;
   justify-content: center;
-  @include breakpoint(small) {
-    width: 100vw;
-    border-top-left-radius: 8%;
-    border-top-right-radius: 8%;
-  }
 }
 
 .bannerStyle {
@@ -33,10 +27,7 @@ form {
   align-items: center;
   background-color: #2b76ff;
   width: 100vw;
-  height: 50%;
-  @include breakpoint(small) {
-    margin-bottom: -25px;
-  }
+  height: 10%;
 }
 
 .logoUniStyle {
