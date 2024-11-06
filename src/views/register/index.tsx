@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement, useState } from "react";
-import {  useRegister } from "../../services/auth.service";
+import { useRegister } from "../../services/auth.service";
 import { useNavigate, useParams } from "react-router-dom";
 import "./styles.scss";
 import TextField from "@mui/material/TextField";
@@ -11,11 +11,9 @@ export default function Register(): ReactElement {
   const { register } = useRegister();
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { token } = useParams()
-  
+  const { token } = useParams();
 
   const onRegister = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
-
     e.preventDefault();
     const formData = {
       nombre: (e.target as any).nombre.value,

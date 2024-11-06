@@ -1,6 +1,6 @@
 import React, { FormEvent, ReactElement, useState } from "react";
 import handlePromise from "../../utils/promise";
-import {useAuthService} from "../../services/auth.service";
+import { useAuthService } from "../../services/auth.service";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.scss";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import LockIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { validateForm } from "./valideForm";
 import IconButton from "@mui/material/IconButton";
 
 export default function Login(): ReactElement {
@@ -22,6 +23,12 @@ export default function Login(): ReactElement {
     e.preventDefault();
     const email = (e.target as any).email.value;
     const password = (e.target as any).password.value;
+    const formData = { email, password };
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     const [, err] = await handlePromise<void, string>(login(email, password));
     if (err) return setError(err);
     navigate("/requests");
