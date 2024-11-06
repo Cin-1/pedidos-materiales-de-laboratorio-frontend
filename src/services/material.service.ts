@@ -44,11 +44,17 @@ const useMaterialService = () => {
     return response.data;
   };
 
-  const addMaterial = async (material: Material): Promise<void> => {
+  const addMaterial = async (material: { description : string , unitMeasure: string , type:string , stock :Number, inRepair: Number}): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/material`,
-      data: material,
+      data: { description   : material.description 
+              , unitMeasure : material.unitMeasure 
+              , type        : material.type 
+              , stock       : material.stock
+              , inRepair    : material.inRepair
+              , isAvailable : true
+            },
     };
 
     const [, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
@@ -58,11 +64,17 @@ const useMaterialService = () => {
     }
   };
 
-  const updateMaterial = async (id: string, material: Material): Promise<void> => {
+  const updateMaterial = async (id: string, material: { description : string , unitMeasure: string , type:string , stock :Number, inRepair: Number}): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/material/${id}`,
-      data: material,
+      data: { description   : material.description 
+              , unitMeasure : material.unitMeasure 
+              , type        : material.type 
+              , stock       : material.stock
+              , inRepair    : material.inRepair
+              , isAvailable : true
+            },
     };
 
     const [, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
