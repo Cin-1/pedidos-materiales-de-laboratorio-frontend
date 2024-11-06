@@ -35,13 +35,13 @@ export default function Register(): ReactElement {
   };
 
   return (
-    <div className="container containerStyle">
-      <div className="banner bannerStyle">
-        <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
+    <div className=" containerStyler">
+      <div className=" bannerStyler">
+        <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyler" />
       </div>
-      <form onSubmit={onRegister} className="formEndStyle">
+      <form onSubmit={onRegister} className="formEndStyler">
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Nombre"
           type="text"
@@ -49,7 +49,7 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Apellido"
           type="text"
@@ -57,7 +57,7 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Email"
           type="text"
@@ -65,23 +65,29 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Dni"
           type="text"
           name="dni"
           autoComplete="off"
         />
-        <TextField className="textFieldStyle" variant="standard" type="text" placeholder="Contraseña" name="password" />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
+          variant="standard"
+          type="text"
+          placeholder="Contraseña"
+          name="password"
+        />
+        <TextField
+          className="textFieldStyler"
           variant="standard"
           type="text"
           placeholder="Confirmar contraseña"
           name="confirmPassword"
         />
 
-        <Button type="submit" className="buttonStyle">
+        <Button type="submit" variant="contained">
           Registrarse
         </Button>
         {error && <small>{error}</small>}
