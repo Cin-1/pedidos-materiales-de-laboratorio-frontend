@@ -21,7 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
-          <Route index path="/register" element={<Register />} />
+          <Route index path="/register/:token" element={<Register />} />
 
           <Route path="/requests" element={<RequestsView />} />
           {/**/}

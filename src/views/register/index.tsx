@@ -1,17 +1,21 @@
 import React, { FormEvent, ReactElement, useState } from "react";
-import useAuthService from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import {  useRegister } from "../../services/auth.service";
+import { useNavigate, useParams } from "react-router-dom";
 import "./styles.scss";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { validateForm } from "./valideForm";
+import handlePromise from "../../utils/promise";
 
 export default function Register(): ReactElement {
-  const { login } = useAuthService();
+  const { register } = useRegister();
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { token } = useParams()
+  
 
   const onRegister = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+
     e.preventDefault();
     const formData = {
       nombre: (e.target as any).nombre.value,
@@ -26,9 +30,10 @@ export default function Register(): ReactElement {
       setError(validationError);
       return;
     }
-    //const [, err] = await handlePromise<void, string>(register(formData));
-    // if (err) return setError(err);
-    // navigate("/login");
+
+    const [, err] = await handlePromise<void, string>(register(formData, token));
+    if (err) return setError(err);
+    navigate("/login");
   };
 
   return (

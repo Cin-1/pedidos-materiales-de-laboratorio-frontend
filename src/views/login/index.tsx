@@ -1,6 +1,6 @@
 import React, { FormEvent, ReactElement, useState } from "react";
 import handlePromise from "../../utils/promise";
-import useAuthService from "../../services/auth.service";
+import {useAuthService} from "../../services/auth.service";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.scss";
 import InputAdornment from "@mui/material/InputAdornment";

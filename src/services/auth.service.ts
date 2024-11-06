@@ -10,7 +10,7 @@ type AccessTokenResponse = {
   accessToken: string;
 };
 
-const useAuthService = () => {
+export const useAuthService = () => {
   const { axiosInstance, updateAuthToken } = useAxios();
 
   
@@ -65,5 +65,39 @@ const useAuthService = () => {
   };
 };
 
-export default useAuthService;
+
+export  const useRegister = () => {
+  const { axiosInstance, updateAuthToken } = useAxios();
+  const register = async (param: {nombre : string ,apellido : string,dni : number,email : string,password : string} ,  otp:string | undefined ): Promise<void> => {
+    
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+    const config: AxiosRequestConfig = {
+      method: "POST",
+      url: `/auth/register/${otp}`,
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"*/*"
+      },
+      data: param,
+    };
+
+    const [response, err] = await handlePromise<AxiosResponse<AccessTokenResponse>, AxiosError<any>>(
+      axiosInstance(config),
+    );
+    
+    if (err) {
+      const msg = err.response?.data?.message || "there was a problem sending the request";
+      return Promise.reject(msg);
+    }
+
+    if (!response) {
+      return Promise.reject("Login response is empty"); /* Fixme: throw a better error */
+    }
+  };
+
+  return {
+    register,
+  };
+};
     
