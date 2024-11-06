@@ -1,6 +1,5 @@
 import React, { MouseEvent, ReactElement } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { ArrowBack } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import "./styles.scss";
 
 export type CardProps = {
@@ -22,13 +21,6 @@ export default function CardRequest({
   proffesor,
   students,
 }: CardProps): ReactElement {
-  const navigate = useNavigate();
-
-  
-  // const onBackClick = (e: MouseEvent<HTMLAnchorElement>) => {
-  //   e.preventDefault();
-  //   navigate(-1);
-  // };
   return (
     <Link to="/requests">
       <div className="card">

@@ -67,7 +67,7 @@ export default function RequestsView(): ReactElement {
           ))}
         </div>
       </main>
-      <MobileNav></MobileNav>
+      <MobileNav />
     </>
   );
 }

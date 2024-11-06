@@ -13,27 +13,39 @@ form {
     color: red;
   }
 }
+.fbuttons {
+  display: none;
+  @include breakpoint(small) {
+    position: relative;
+    display: flex;
+    align-self: flex-end;
+    margin-right: 1rem;
+    flex-direction: row;
+  }
+}
 
+.buttons {
+  @include breakpoint(small) {
+    display: none;
+  }
+}
 
-.listElements{
+.listElements {
   padding: 8px 8px;
 }
 
-
-.body{
+.body {
   margin: 6% 0% 0% 0%;
-  
 }
 
-.formEndStyle{
-  display:  flex;
-  flex-direction:  column;
-  align-items:center;
+.formEndStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding-top: 6%;
   padding-bottom: 6%;
-
 }
 
-.formElement{
+.formElement {
   width: 80%;
 }

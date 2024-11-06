@@ -6,12 +6,13 @@ import useMaterialService from "../../services/material.service";
 import handlePromise from "../../utils/promise";
 import { Material } from "../../types/material";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, Fab } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
+import { AddIcCallOutlined, Delete, Save } from "@mui/icons-material";
 
 export default function MaterialDetailView(): ReactElement {
   const { id } = useParams();
@@ -129,14 +130,25 @@ export default function MaterialDetailView(): ReactElement {
 
             <TextField id="Stock" className="formElement" label="Stock" variant="outlined" />
             <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" />
-
-            <Button type="submit" className="buttonStyle">
-              Grabar
-            </Button>
+            <div className="buttons">
+              <Button type="submit" variant="contained">
+                Grabar
+              </Button>
+            </div>
+            <div className="fbuttons">
+              <div style={{ marginRight: "1rem" }}>
+                <Fab color="success" aria-label="save" onClick={() => {}}>
+                  <Save />
+                </Fab>
+              </div>
+              <Fab color="error" aria-label="borrar" onClick={() => {}}>
+                <Delete />
+              </Fab>
+            </div>
           </form>
         </div>
       </main>
-      <MobileNav></MobileNav>
+      <MobileNav />
     </>
   );
 }
