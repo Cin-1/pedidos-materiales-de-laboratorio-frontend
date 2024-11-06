@@ -55,8 +55,8 @@ export default function MaterialsView(): ReactElement {
       <div  className="body">              
                { 
               showedMaterial.map((m,index) =>
-                    <div className="listElements">
-                      <Dropdown 
+              <div className="listElements">
+                      <Dropdown key={m._id}
                         title= {m.description} 
                         icon=  {true}
                         desplegado= {selectedid == m._id}
@@ -65,7 +65,7 @@ export default function MaterialsView(): ReactElement {
                         repair= {m.inRepair?.toString() || ''}
                         clase= {m.type}
                         onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
-                        onEdition={() => navigate( m._id)} 
+                        onEdition={() =>     navigate(`/materials/${m._id}`)} 
                       />  
               </div>
               ) 
@@ -73,7 +73,7 @@ export default function MaterialsView(): ReactElement {
         </div>  
       </main>
       <div className="fbuttons">
-        <Fab color="primary" aria-label="add" >
+        <Fab color="primary" aria-label="add" onClick={ () => navigate('New') } >
           <AddIcon />
         </Fab>
       </div>

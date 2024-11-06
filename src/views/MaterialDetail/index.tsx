@@ -10,7 +10,6 @@ import  Dropdown  from "../../components/dropdown"
 import TextField from "@mui/material/TextField";
 import  useUserService  from "../../services/user.service"
 import { Button } from "@mui/material";
-
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -19,28 +18,26 @@ import { useParams } from "react-router-dom";
 
 
 export default function MaterialDetailView(): ReactElement {
+  const { id } = useParams();
     
   const [materialData, setMaterialData] = useState<Material>();
   const materialService = useMaterialService();
-
+  
   useEffect(()=>{ 
+    
     const fetchMaterials = async () => {
-      const materialId  = 0
-      
-      if (materialId){
+
+      if (id){
           try {
-          const [materials, err] = await handlePromise(materialService.getMaterial(materialId));      
-          if (err)  {
-            throw(err)
-          }
-          if(materials) {
-            setMaterialData(materials);
-          }
+          const [material, err] = await handlePromise(materialService.getMaterial(id));      
+          if (err)  {throw(err)}
+          if (material) {setMaterialData(material);}
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       }
     };
+    
     fetchMaterials();
   } ,[]);
 
@@ -58,7 +55,10 @@ export default function MaterialDetailView(): ReactElement {
   }
 
   const handleChange = (event: SelectChangeEvent) => {
+    console.log(materialData)
     console.log(event.target.value as string);
+
+
   };
 
 
@@ -66,35 +66,74 @@ export default function MaterialDetailView(): ReactElement {
 
   return <>
     <Header {...headerAttributes}></Header>
+    
     <main>
       <div  className="body">              
           <form onSubmit={onsubmit} className="formEndStyle">
-            <TextField
-              className="textFieldStyle"
-              variant="standard"
-              placeholder="Email"
-              type="text"
-              name="email"
-              
-              autoComplete="off"
-            />
+            
+            <TextField id="description" className="formElement" multiline  
+                value={materialData? materialData.description : ''}
+            rows={4} label="description" variant="outlined" />
 
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        {/*     <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
+              <Select 
+                className="description"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={materialData? materialData.stock : ''}
+                label="Stock"
+                onChange={handleChange}
+              >
+                <MenuItem value={'Suficiente'}>Suficiente</MenuItem>
+                <MenuItem value={'faltante'}>faltante</MenuItem>
+              </Select>
+            </FormControl> */}
+
+  
+
+            <FormControl  className="formElement" >
+              <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={materialData? materialData.unitMeasure : ''}
+                  label="unidad de Medida"
+                  onChange={handleChange}>
+                  <MenuItem value={'u'}>Unidades</MenuItem>
+                  <MenuItem value={'d'}>Docenas</MenuItem>
+                  <MenuItem value={'cm'}>centimetros Cubicos</MenuItem>
+                  <MenuItem value={'ml'}>miliLitros</MenuItem>
+                  <MenuItem value={'mg'}>miliGramos</MenuItem>
+                  <MenuItem value={'Copas mundiales'}>Copas mundiales</MenuItem>
+                  <MenuItem value={'Dedos de Frente'}>Dedos de Frente</MenuItem>
+                </Select>
+              </FormControl>
+
+
+            <FormControl  className="formElement" >
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={"Ten"}
-                label="Age"
+                value={materialData? materialData.type : ''}
+                label="unidad de Medida"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={'Tubos de ensayo'}>Tubos de ensayo</MenuItem>
+                <MenuItem value={'Goteros'}>Goteros</MenuItem>
+                <MenuItem value={'Frascos'}>Frascos</MenuItem>
+                <MenuItem value={'Bureta'}>Bureta</MenuItem>
+                <MenuItem value={'Pipeta'}>Pipeta</MenuItem>
               </Select>
             </FormControl>
+
+            <TextField id="Stock"         className="formElement"   label="Stock"         variant="outlined" />
+            <TextField id="En Reparacion" className="formElement"   label="En Reparacion" variant="outlined" />
+
+
             <Button type="submit" className="buttonStyle">
-              Iniciar Sesión
+              Grabar
             </Button>
             
           </form>
