@@ -19,7 +19,7 @@ export default function Search({placeholder,callback}:SearchProps): ReactElement
 
   return (
      <form onSubmit={onSearch} className="searchform">
-        <ArrowDropUp/>
+         <img src={`/img/lupa.svg`}></img>
         <input className="searcher" type="text" name="input" id="input" placeholder={placeholder}/>
       </form>
   );

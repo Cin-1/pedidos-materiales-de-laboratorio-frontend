@@ -8,9 +8,11 @@ import Login from "./views/login";
 /* Styles */
 import "./App.scss";
 import PrivateRoute from "./components/private-route";
-import RequestsView from "./views/requests";
 import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
+import MaterialsView from "./views/Materials";
+import RequestsView from "./views/requests";
+import MaterialDetailsView from "./views/MaterialDetail";
 
 function App() {
   const [text, useText] = useState([]);
@@ -20,12 +22,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
-          <Route path="/requests" element={<RequestsView />} />
           {/**/}
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
+              <Route path="/materials" element={<MaterialsView />} />
+              <Route path="/materials/:materialId" element={<MaterialDetailsView />} />
+              
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
