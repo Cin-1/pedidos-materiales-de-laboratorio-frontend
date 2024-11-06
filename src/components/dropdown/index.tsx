@@ -13,6 +13,8 @@ export type dropProps = {
   stock: string;
   repair: string;
   clase: string;
+  onClick?: () => void,
+  onEdition?: () => void,
 };
 
 export default function Dropdown({
@@ -23,9 +25,11 @@ export default function Dropdown({
   stock,
   repair,
   clase,
+  onClick,
+  onEdition,
 }: dropProps): ReactElement {
   return (
-    <Link to={"/test"}>
+    <div>
       <div className="drop" style={{ paddingBottom: desplegado ? "5%" : undefined }}>
         <div className="drop-body">
           <div className="drop-header">
@@ -33,9 +37,9 @@ export default function Dropdown({
               <h3 className="drop-title">{title}</h3>
             </div>
             <div className="icons">
-              {icon && <EditOutlined fontSize="small" />}
-              {icon && !desplegado && <ArrowRightIcon fontSize="medium" />}
-              {desplegado && <ArrowDropDownIcon fontSize="medium" />}
+              {icon && desplegado &&  <div onClick={onEdition} > <EditOutlined  fontSize="small" /> </div>}
+              {icon && !desplegado && <div onClick={onClick}><ArrowRightIcon  fontSize="medium" /> </div>}
+              {desplegado &&          <div onClick={onClick}><ArrowDropDownIcon fontSize="medium" /> </div>}
             </div>
           </div>
           {desplegado && (
@@ -54,6 +58,6 @@ export default function Dropdown({
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
