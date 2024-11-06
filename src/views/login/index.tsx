@@ -1,7 +1,7 @@
 import React, { FormEvent, ReactElement, useState } from "react";
 import handlePromise from "../../utils/promise";
-import {useAuthService} from "../../services/auth.service";
-import { Link, useNavigate } from "react-router-dom";
+import { useAuthService } from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
 import "./styles.scss";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/EmailOutlined";
@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import LockIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { validateForm } from "./valideForm";
 import IconButton from "@mui/material/IconButton";
 
 export default function Login(): ReactElement {
@@ -20,8 +21,15 @@ export default function Login(): ReactElement {
 
   const onLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setError("");
     const email = (e.target as any).email.value;
     const password = (e.target as any).password.value;
+    const formData = { email, password };
+    const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     const [, err] = await handlePromise<void, string>(login(email, password));
     if (err) return setError(err);
     navigate("/requests");
@@ -78,7 +86,7 @@ export default function Login(): ReactElement {
           name="password"
           InputProps={passwordInputProps}
         />
-        <Button type="submit" className="buttonStyle">
+        <Button type="submit" variant="contained">
           Iniciar Sesión
         </Button>
         {error && <small>{error}</small>}

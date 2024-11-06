@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement, useState } from "react";
-import {  useRegister } from "../../services/auth.service";
+import { useRegister } from "../../services/auth.service";
 import { useNavigate, useParams } from "react-router-dom";
 import "./styles.scss";
 import TextField from "@mui/material/TextField";
@@ -11,11 +11,9 @@ export default function Register(): ReactElement {
   const { register } = useRegister();
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { token } = useParams()
-  
+  const { token } = useParams();
 
   const onRegister = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
-
     e.preventDefault();
     const formData = {
       nombre: (e.target as any).nombre.value,
@@ -45,13 +43,13 @@ export default function Register(): ReactElement {
   };
 
   return (
-    <div className="container containerStyle">
-      <div className="banner bannerStyle">
-        <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
+    <div className=" containerStyler">
+      <div className=" bannerStyler">
+        <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyler" />
       </div>
-      <form onSubmit={onRegister} className="formEndStyle">
+      <form onSubmit={onRegister} className="formEndStyler">
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Nombre"
           type="text"
@@ -59,7 +57,7 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Apellido"
           type="text"
@@ -67,7 +65,7 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Email"
           type="text"
@@ -75,23 +73,29 @@ export default function Register(): ReactElement {
           autoComplete="off"
         />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
           variant="standard"
           placeholder="Dni"
           type="text"
           name="dni"
           autoComplete="off"
         />
-        <TextField className="textFieldStyle" variant="standard" type="text" placeholder="Contraseña" name="password" />
         <TextField
-          className="textFieldStyle"
+          className="textFieldStyler"
+          variant="standard"
+          type="text"
+          placeholder="Contraseña"
+          name="password"
+        />
+        <TextField
+          className="textFieldStyler"
           variant="standard"
           type="text"
           placeholder="Confirmar contraseña"
           name="confirmPassword"
         />
 
-        <Button type="submit" className="buttonStyle">
+        <Button type="submit" variant="contained">
           Registrarse
         </Button>
         {error && <small>{error}</small>}

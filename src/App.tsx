@@ -24,8 +24,6 @@ function App() {
         <Routes>
           <Route index path="/login" element={<Login />} />
           <Route index path="/register/:token" element={<Register />} />
-
-          <Route path="/requests" element={<RequestsView />} />
           {/**/}
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
@@ -33,7 +31,7 @@ function App() {
               <Route path="/requests" element={<RequestsView />} />
               <Route path="/materials" element={<MaterialsView />} />
               <Route path="/materials/:id" element={<MaterialDetailsView />} />
-             </Route>
+            </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
