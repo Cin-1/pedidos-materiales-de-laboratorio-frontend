@@ -21,6 +21,7 @@ export default function Login(): ReactElement {
 
   const onLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setError("");
     const email = (e.target as any).email.value;
     const password = (e.target as any).password.value;
     const formData = { email, password };
@@ -85,7 +86,7 @@ export default function Login(): ReactElement {
           name="password"
           InputProps={passwordInputProps}
         />
-        <Button type="submit" className="buttonStyle">
+        <Button type="submit" variant="contained">
           Iniciar Sesión
         </Button>
         {error && <small>{error}</small>}
