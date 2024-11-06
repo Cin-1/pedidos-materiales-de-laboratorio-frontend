@@ -41,13 +41,14 @@ export default function RequestsView(): ReactElement {
   }
 
 
+
   const headerAttributes = {
     title: "pedidos",
-    enableSearch:true,
-    icon: 'request.svg',
-    searchPlaceholder: 'Buscar pedidos',
-    searchCallback: onSearchResult
-  }
+    enableSearch: true,
+    icon: "request.svg",
+    searchPlaceholder: "Buscar pedidos",
+    searchCallback: onSearchResult,
+  };
 
   return <>
     <Header {...headerAttributes}></Header>
@@ -69,5 +70,6 @@ export default function RequestsView(): ReactElement {
         </div>     
       </main>
       <MobileNav></MobileNav>
-    </>;
+    </>
+  );
 }

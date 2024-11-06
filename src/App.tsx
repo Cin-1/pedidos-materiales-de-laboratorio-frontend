@@ -8,34 +8,28 @@ import Login from "./views/login";
 /* Styles */
 import "./App.scss";
 import PrivateRoute from "./components/private-route";
-import RequestsView from "./views/requests";
 import { AuthProvider } from "./context/auth.context";
 import NotFound from "./views/errors/404";
-import CardRequest from "./components/card";
-import Header from "./components/header";
-import MobileNav from "./components/mobile-nav";
+import MaterialsView from "./views/Materials";
+import RequestsView from "./views/requests";
+import MaterialDetailsView from "./views/MaterialDetail";
 
 function App() {
-  
-  const [text,useText] = useState([])
-  
+  const [text, useText] = useState([]);
+
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route index path="/login" element={<Login />} />
-          <Route path="/requests" element={<RequestsView />} />
-          
-
-
-          {/* Component PrivateRoute will check for a valid JWT
-           * and redirect to '/login' if there isn't one
-           * so every route that requires an auth user should be
-           * defined inside this route*/}
+          {/**/}
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
+              <Route path="/materials" element={<MaterialsView />} />
+              <Route path="/materials/:id" element={<MaterialDetailsView />} />
+              
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
