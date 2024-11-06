@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
@@ -12,13 +12,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
-import { AddIcCallOutlined, Delete, Save } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { Delete, Save } from "@mui/icons-material";
 
 export default function MaterialDetailView(): ReactElement {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [materialData, setMaterialData] = useState<Material>();
   const materialService = useMaterialService();
+
+  const [description, setDescription] = useState("");
+  const [unit, setunit] = useState("");
+  const [type, settype] = useState("");
+  const [Stock, setStock] = useState(0);
+  const [Repair, setRepair] = useState(0);
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -29,7 +36,11 @@ export default function MaterialDetailView(): ReactElement {
             throw err;
           }
           if (material) {
-            setMaterialData(material);
+            setDescription(material.description);
+            setunit(material.unitMeasure);
+            settype(material.type);
+            setStock(material.stock);
+            setRepair(material.inRepair ? material.inRepair : 0);
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -47,18 +58,55 @@ export default function MaterialDetailView(): ReactElement {
 
   const headerAttributes = {
     title: "materiales",
-    enableSearch: true,
+    enableSearch: false,
+    backArrow: true,
     icon: "material.svg",
     searchPlaceholder: "Buscar Material",
     searchCallback: onSearchResult,
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(materialData);
-    console.log(event.target.value as string);
-  };
+  const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    const formData = {
+      description: description,
+      unit: unit,
+      type: type,
+      Stock: Stock,
+      Repair: Repair,
+    };
 
-  const onsubmit = () => {};
+    /*     const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+ */
+    if (materialData && id) {
+      const [, err] = await handlePromise<void, string>(
+        materialService.updateMaterial(id, {
+          description: description,
+          unitMeasure: unit,
+          type: type,
+          stock: Stock,
+          inRepair: Repair,
+        }),
+      );
+      if (err) return console.log(err);
+      navigate(-1);
+    } else {
+      const [, err] = await handlePromise<void, string>(
+        materialService.addMaterial({
+          description: description,
+          unitMeasure: unit,
+          type: type,
+          stock: Stock,
+          inRepair: Repair,
+        }),
+      );
+      if (err) return console.log(err);
+      navigate(-1);
+    }
+  };
 
   return (
     <>
@@ -71,10 +119,11 @@ export default function MaterialDetailView(): ReactElement {
               id="description"
               className="formElement"
               multiline
-              value={materialData ? materialData.description : ""}
+              value={description}
               rows={4}
               label="description"
               variant="outlined"
+              onChange={(e) => setDescription(e.target.value)}
             />
 
             {/*     <FormControl fullWidth>
@@ -97,9 +146,9 @@ export default function MaterialDetailView(): ReactElement {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={materialData ? materialData.unitMeasure : ""}
+                value={unit}
                 label="unidad de Medida"
-                onChange={handleChange}
+                onChange={(e) => setunit(e.target.value as string)}
               >
                 <MenuItem value={"u"}>Unidades</MenuItem>
                 <MenuItem value={"d"}>Docenas</MenuItem>
@@ -116,9 +165,9 @@ export default function MaterialDetailView(): ReactElement {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={materialData ? materialData.type : ""}
+                value={type}
                 label="unidad de Medida"
-                onChange={handleChange}
+                onChange={(e) => settype(e.target.value as string)}
               >
                 <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
                 <MenuItem value={"Goteros"}>Goteros</MenuItem>

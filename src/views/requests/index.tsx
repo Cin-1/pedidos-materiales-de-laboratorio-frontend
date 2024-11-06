@@ -28,7 +28,8 @@ export default function RequestsView(): ReactElement {
           setRequestData(requesteds);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setRequestData([]);
+        setShowedRequest([]);
       }
     };
     fetchRequests();

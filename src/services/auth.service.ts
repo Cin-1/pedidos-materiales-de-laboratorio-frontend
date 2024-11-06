@@ -68,19 +68,24 @@ export const useAuthService = () => {
 
 export  const useRegister = () => {
   const { axiosInstance, updateAuthToken } = useAxios();
-  const register = async (param: {nombre : string ,apellido : string,dni : number,email : string,password : string} ,  otp:string | undefined ): Promise<void> => {
-    
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      
+  const register = async (param: { name: string,lastName: string,password: string,email: string,dni: number } 
+                                  ,  otp:string | undefined ): Promise<void> => {
+            ;
     const config: AxiosRequestConfig = {
       method: "POST",
-      url: `/auth/register/${otp}`,
+      url: `/auth/register?token=${otp}`,
       headers:{
         "Content-Type":"application/json",
         "Accept":"*/*"
       },
-      data: param,
-    };
+      data: {
+        "name": param.name
+        ,"lastName": param.lastName
+        ,"password": param.password
+        ,"email": param.email
+        ,"dni": Number(param.dni)
+      },
+    } ;
 
     const [response, err] = await handlePromise<AxiosResponse<AccessTokenResponse>, AxiosError<any>>(
       axiosInstance(config),
