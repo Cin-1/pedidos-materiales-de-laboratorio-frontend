@@ -30,7 +30,9 @@ export default function RequestsView(): ReactElement {
           setRequestData(requesteds)
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        
+        setRequestData([]);
+        setShowedRequest([]);
       }
     };
     fetchRequests();
@@ -50,7 +52,7 @@ export default function RequestsView(): ReactElement {
     searchCallback: onSearchResult,
   };
 
-  return <>
+  return (<>
     <Header {...headerAttributes}></Header>
     <main>
       <div  className="body">
