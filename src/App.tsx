@@ -14,6 +14,8 @@ import Register from "./views/register";
 import MaterialsView from "./views/Materials";
 import RequestsView from "./views/requests";
 import MaterialDetailsView from "./views/MaterialDetail";
+import EquipmentDetailsView from "./views/EquipmentDetail";
+import EquipmentsView from "./views/Equipments";
 
 function App() {
   const [text, useText] = useState([]);
@@ -29,8 +31,12 @@ function App() {
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
+                
               <Route path="/materials" element={<MaterialsView />} />
               <Route path="/materials/:id" element={<MaterialDetailsView />} />
+
+              <Route path="/equipments"     element={<EquipmentsView />} />
+              <Route path="/equipments/:id" element={<EquipmentDetailsView />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

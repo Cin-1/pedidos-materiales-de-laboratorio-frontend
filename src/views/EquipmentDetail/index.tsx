@@ -2,9 +2,9 @@ import React, { FormEvent, ReactElement, useEffect, useRef, useState } from "rea
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
-import useMaterialService from "../../services/material.service";
+import useEquipmentService from "../../services/equipment.service";
 import handlePromise from "../../utils/promise";
-import { Material } from "../../types/material";
+import { Equipment } from "../../types/equipment";
 import TextField from "@mui/material/TextField";
 import { Button, Fab } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -15,32 +15,31 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
 
-export default function MaterialDetailView(): ReactElement {
+export default function EquipmentDetailView(): ReactElement {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [materialData, setMaterialData] = useState<Material>();
-  const materialService = useMaterialService();
+  const [equipmentData, setEquipmentData] = useState<Equipment>();
+  const equipmentService = useEquipmentService();
 
   const [description, setDescription] = useState("");
-  const [unit, setunit] = useState("");
-  const [type, settype] = useState("");
-  const [Stock, setStock] = useState(0);
+  const [Stock, setStock] = useState();
+
+  const [type, setType] = useState("");
   const [Repair, setRepair] = useState(0);
 
   useEffect(() => {
-    const fetchMaterials = async () => {
+    const fetchEquipments = async () => {
       if (id) {
         try {
-          const [material, err] = await handlePromise(materialService.getMaterial(id));
+          const [equipment, err] = await handlePromise(equipmentService.getEquipment(id));
           if (err) {
             throw err;
           }
-          if (material) {
-            setDescription(material.description);
-            setunit(material.unitMeasure);
-            settype(material.type);
-            setStock(material.stock);
-            setRepair(material.inRepair ? material.inRepair : 0);
+          if (equipment) {
+            setDescription(equipment.description);
+           //setStock((equipment.stock));
+            setType(equipment.type);
+            setRepair(equipment.inRepair ? equipment.inRepair : 0);
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -48,22 +47,22 @@ export default function MaterialDetailView(): ReactElement {
       }
     };
 
-    fetchMaterials();
+    fetchEquipments();
   }, []);
 
   
   const headerAttributes = {
-    title: "material",
+    title: "Equipo",
     enableSearch: false,
     backArrow: true,
-    icon: "material.svg",
-    searchPlaceholder: "Buscar Material",
+    icon: "equipment.svg",
+    searchPlaceholder: "Buscar Equipo",
   };
 
  const onDelete = async(): Promise<void> =>
      {
         if (id) {
-          const [, err] = await handlePromise<void, string>(materialService.removeMaterial(id), );
+          const [, err] = await handlePromise<void, string>(equipmentService.removeEquipment(id), );
           if (err) return console.log(err);
           navigate(-1);
       }
@@ -73,10 +72,9 @@ export default function MaterialDetailView(): ReactElement {
     e.preventDefault();
     const formData = {
       description: description,
-      unit: unit,
-      type: type,
       Stock: Stock,
-      Repair: Repair,
+      type:type,
+      Repair: Repair
     };
 
     /*     const validationError = validateForm(formData);
@@ -85,30 +83,28 @@ export default function MaterialDetailView(): ReactElement {
       return;
     }
  */
-    if (materialData && id) {
-      const [, err] = await handlePromise<void, string>(
-        materialService.updateMaterial(id, {
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Stock,
-          inRepair: Repair,
+    if (equipmentData && id) {
+   /*    const [, err] = await handlePromise<void, string>(
+        equipmentService.updateEquipment(id, {
+              description: description,
+              stock: Stock,
+              type:type,
+              Repair: Repair
         }),
       );
       if (err) return console.log(err);
       navigate(-1);
     } else {
       const [, err] = await handlePromise<void, string>(
-        materialService.addMaterial({
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Stock,
-          inRepair: Repair,
+        equipmentService.addEquipment({
+                description: description,
+                stock: Stock,
+                type:type,
+                Repair: Repair
         }),
       );
       if (err) return console.log(err);
-      navigate(-1);
+      navigate(-1); */
     }
   };
 
@@ -130,37 +126,20 @@ export default function MaterialDetailView(): ReactElement {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            {/*     <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
-              <Select 
-                className="description"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={materialData? materialData.stock : ''}
-                label="Stock"
-                onChange={handleChange}
-              >
-                <MenuItem value={'Suficiente'}>Suficiente</MenuItem>
-                <MenuItem value={'faltante'}>faltante</MenuItem>
-              </Select>
-            </FormControl> */}
+        
 
             <FormControl className="formElement">
-              <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
+              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={unit}
-                label="unidad de Medida"
-                onChange={(e) => setunit(e.target.value as string)}
+                value={Stock}
+                label="Stock"
+                onChange={(e) => {}}
               >
-                <MenuItem value={"u"}>Unidades</MenuItem>
-                <MenuItem value={"d"}>Docenas</MenuItem>
-                <MenuItem value={"cm"}>centimetros Cubicos</MenuItem>
-                <MenuItem value={"ml"}>miliLitros</MenuItem>
-                <MenuItem value={"mg"}>miliGramos</MenuItem>
-                <MenuItem value={"Copas mundiales"}>Copas mundiales</MenuItem>
-
+                <MenuItem value={"s"}>Suficiente</MenuItem>
+                <MenuItem value={"f"}>faltante</MenuItem>
+                
               </Select>
             </FormControl>
 
@@ -171,17 +150,13 @@ export default function MaterialDetailView(): ReactElement {
                 id="demo-simple-select"
                 value={type}
                 label="unidad de Medida"
-                onChange={(e) => settype(e.target.value as string)}
+                onChange={(e) => setType(e.target.value as string)}
               >
                 <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
-                <MenuItem value={"Goteros"}>Goteros</MenuItem>
-                <MenuItem value={"Frascos"}>Frascos</MenuItem>
-                <MenuItem value={"Bureta"}>Bureta</MenuItem>
-                <MenuItem value={"Pipeta"}>Pipeta</MenuItem>
+                <MenuItem value={"equipo general"}>Tubos de ensayo</MenuItem>
               </Select>
             </FormControl>
 
-            <TextField id="Stock" className="formElement" label="Stock" variant="outlined" />
             <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" />
             <div className="buttons">
               <Button type="submit" variant="contained">
@@ -195,7 +170,7 @@ export default function MaterialDetailView(): ReactElement {
                 </Fab>
               </div>
               {id!="New"? 
-              <Fab color="error" aria-label="borrar" onClick={() => {onDelete()}}>
+              <Fab color="error" aria-label="borrar" onClick={(e) => {onDelete()}}>
                 <Delete />
               </Fab>:
               <div/>}
