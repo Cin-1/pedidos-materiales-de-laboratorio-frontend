@@ -29,7 +29,7 @@ export default function Dropdown({
   onEdition,
 }: dropProps): ReactElement {
   return (
-    <div>
+    <div className="containerdropdown">
       <div className="drop" style={{ paddingBottom: desplegado ? "5%" : undefined }}>
         <div className="drop-body">
           <div className="drop-header">

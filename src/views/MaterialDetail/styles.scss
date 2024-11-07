@@ -16,11 +16,10 @@ form {
 .fbuttons {
   display: none;
   @include breakpoint(small) {
-    position: relative;
     display: flex;
-    align-self: flex-end;
-    margin-right: 1rem;
-    flex-direction: row;
+    position: fixed;
+    bottom: 2%;
+    right: 0;
   }
 }
 
@@ -42,8 +41,10 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 6%;
-  padding-bottom: 6%;
+
+  padding-left: 0%;
+  padding-right: 0%;
+
 }
 
 .formElement {

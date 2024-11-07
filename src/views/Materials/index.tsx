@@ -29,6 +29,7 @@ export default function MaterialsView(): ReactElement {
         if(materials) {
           setMaterialData(materials);
           setShowedMaterial(materials);
+          console.log(materialData)
         }
       } catch (error) {
         console.error('Error fetching data:', error);
