@@ -51,19 +51,25 @@ export default function MaterialDetailView(): ReactElement {
     fetchMaterials();
   }, []);
 
-  const onSearchResult = (input: string) => {
-    //input ? setShowedMaterial(materialData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedMaterial(materialData);
-    console.log("asd");
-  };
-
+  
   const headerAttributes = {
-    title: "materiales",
+    title: "material",
     enableSearch: false,
     backArrow: true,
     icon: "material.svg",
     searchPlaceholder: "Buscar Material",
-    searchCallback: onSearchResult,
   };
+
+ const onDelete = async(e: FormEvent<HTMLFormElement>): Promise<void> =>
+     {
+      console.log("anda amimir")
+        if (id) {
+         e.preventDefault();
+          const [, err] = await handlePromise<void, string>(materialService.removeMaterial(id), );
+          if (err) return console.log(err);
+          navigate(-1);
+      }
+     }
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -156,7 +162,7 @@ export default function MaterialDetailView(): ReactElement {
                 <MenuItem value={"ml"}>miliLitros</MenuItem>
                 <MenuItem value={"mg"}>miliGramos</MenuItem>
                 <MenuItem value={"Copas mundiales"}>Copas mundiales</MenuItem>
-                <MenuItem value={"Dedos de Frente"}>Dedos de Frente</MenuItem>
+
               </Select>
             </FormControl>
 
@@ -186,13 +192,16 @@ export default function MaterialDetailView(): ReactElement {
             </div>
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
-                <Fab color="success" aria-label="save" onClick={() => {}}>
+                <Fab color="success" aria-label="save" type="submit"  >
                   <Save />
                 </Fab>
               </div>
-              <Fab color="error" aria-label="borrar" onClick={() => {}}>
+              {id!="New"? 
+              <Fab color="error" aria-label="borrar" onClick={(e) => {onDelete(e)}}>
                 <Delete />
-              </Fab>
+              </Fab>:
+              <div/>}
+              
             </div>
           </form>
         </div>
