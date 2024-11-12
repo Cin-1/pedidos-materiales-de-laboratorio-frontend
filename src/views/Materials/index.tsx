@@ -27,9 +27,8 @@ export default function MaterialsView(): ReactElement {
       try {
         if (err)  {throw(err)}
         if(materials) {
-          setMaterialData(materials);
-          setShowedMaterial(materials);
-          console.log(materialData)
+          setMaterialData(materials.filter(e=>!e.isSoftDeleted));
+          setShowedMaterial(materials.filter(e=>!e.isSoftDeleted));
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -40,7 +39,7 @@ export default function MaterialsView(): ReactElement {
 
   const onSearchResult = (input:string)=>{
     input ? setShowedMaterial(materialData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedMaterial(materialData);
-  }
+   }
 
   const headerAttributes = {
     title: "materiales",
@@ -51,33 +50,34 @@ export default function MaterialsView(): ReactElement {
   }
 
   return <>
-    <Header {...headerAttributes}></Header>
-    <main>
-      <div  className="body">              
-               { 
-              showedMaterial.map((m,index) =>
-              <div className="listElements">
-                      <Dropdown key={m._id}
-                        title= {m.description} 
-                        icon=  {true}
-                        desplegado= {selectedid == m._id}
-                        description= {m.description}
-                        stock= {m.stock?.toString() || '0' }
-                        repair= {m.inRepair?.toString() || ''}
-                        clase= {m.type}
-                        onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
-                        onEdition={() =>     navigate(`/materials/${m._id}`)} 
-                      />  
-              </div>
-              ) 
-              } 
+      <Header {...headerAttributes}></Header>
+    
+      <main>
+        <div  className="body">              
+                { 
+                showedMaterial.map((m,index) =>
+                <div className="listElements">
+                        <Dropdown key={m._id}
+                          title= {m.description} 
+                          icon=  {true}
+                          desplegado= {selectedid == m._id}
+                          description= {m.description}
+                          stock= {m.stock?.toString() || '0' }
+                          repair= {m.inRepair?.toString() || ''}
+                          clase= {m.type}
+                          onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
+                          onEdition={() =>     navigate(`/materials/${m._id}`)} 
+                        />  
+                </div>
+                ) 
+                } 
         </div>  
       </main>
+      
       <div className="fbuttons">
         <Fab color="primary" aria-label="add" onClick={ () => navigate('New') } >
           <AddIcon />
         </Fab>
       </div>
-      <MobileNav></MobileNav>
     </>;
 }

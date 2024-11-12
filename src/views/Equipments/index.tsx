@@ -26,11 +26,11 @@ export default function EquipmentsView(): ReactElement {
       const [equipments, err] = await handlePromise(equipmentService.getEquipments());      
       try {
         if (err)  {throw(err)}
-        if(equipments) {
-          setEquipmentData(equipments);
-          setShowedEquipment(equipments);
-          console.log(equipmentData)
-        }
+        if(equipments) 
+          {
+            setEquipmentData(equipments.filter(e=>!e.isSoftDeleted));
+            setShowedEquipment(equipments.filter(e=>!e.isSoftDeleted));
+          }
       } catch (error) {
         console.error('Error fetching data:', error);
       }

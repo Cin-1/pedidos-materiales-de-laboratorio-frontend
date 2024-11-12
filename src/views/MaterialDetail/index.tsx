@@ -130,21 +130,6 @@ export default function MaterialDetailView(): ReactElement {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            {/*     <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
-              <Select 
-                className="description"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={materialData? materialData.stock : ''}
-                label="Stock"
-                onChange={handleChange}
-              >
-                <MenuItem value={'Suficiente'}>Suficiente</MenuItem>
-                <MenuItem value={'faltante'}>faltante</MenuItem>
-              </Select>
-            </FormControl> */}
-
             <FormControl className="formElement">
               <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
               <Select
