@@ -12,7 +12,7 @@ export default function NavButton({ href, icon, target, name }: NavButtonProps):
   const loweCaseName = name.toLocaleLowerCase();
   return (
     <Link to={href} className="nav__button" target={target || "_self"}>
-      <img src={`img/nav/${icon}`} alt="nav-button-image" />
+      <img className="nav-icon" src={`img/nav/${icon}`} alt="nav-button-image" />
       <span>{loweCaseName}</span>
     </Link>
   );

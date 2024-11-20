@@ -16,7 +16,6 @@ body {
   overflow-x: hidden;
   flex: auto;
   flex-direction: column;
-  
 }
 
 code {
@@ -72,11 +71,6 @@ main > article {
   .lato-light {
     font: "Lato", sans-serif;
     font-style: normal;
-  }
-
-  .mobile,
-  nav.mobile {
-    display: none;
   }
 
   main > article {

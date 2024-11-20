@@ -16,11 +16,10 @@ form {
 .fbuttons {
   display: none;
   @include breakpoint(small) {
-    position: relative;
     display: flex;
-    align-self: flex-end;
-    margin-right: 1rem;
-    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    right: 0;
   }
 }
 
