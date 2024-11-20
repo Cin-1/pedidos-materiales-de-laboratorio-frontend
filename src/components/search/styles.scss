@@ -1,6 +1,7 @@
 @import "../../globals.scss";
 
 .searchform {
+  color: color("text-secondary");
   display: grid;
   grid-template-columns: 10% 90%;
   justify-items: center;
@@ -21,6 +22,7 @@
     outline: none; /* Quita el contorno por defecto */
   }
   img {
+    color: color("text-secondary");
     height: 2em;
   }
   @include breakpoint(small) {
@@ -32,7 +34,7 @@
 
 .searcher {
   background-color: #ffff;
-  font-size: 2em;
+  font-size: 1.8em;
   justify-self: self-start;
   border-radius: 6%;
   border: 0px;

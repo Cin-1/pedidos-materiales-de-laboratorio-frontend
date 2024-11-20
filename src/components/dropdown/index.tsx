@@ -13,8 +13,8 @@ export type dropProps = {
   stock: string;
   repair: string;
   clase: string;
-  onClick?: () => void,
-  onEdition?: () => void,
+  onClick?: () => void;
+  onEdition?: () => void;
 };
 
 export default function Dropdown({
@@ -37,13 +37,25 @@ export default function Dropdown({
               <h3 className="drop-title">{title}</h3>
             </div>
             <div className="icons">
-              {icon && desplegado &&  <div onClick={onEdition} > <EditOutlined  fontSize="small" /> </div>}
-              {icon && !desplegado && <div onClick={onClick}><ArrowRightIcon  fontSize="medium" /> </div>}
-              {desplegado &&          <div onClick={onClick}><ArrowDropDownIcon fontSize="medium" /> </div>}
+              {icon && desplegado && (
+                <div onClick={onEdition} style={{ fontSize: "calc(14px + 1vw)" }}>
+                  <EditOutlined fontSize="inherit" />
+                </div>
+              )}
+              {icon && !desplegado && (
+                <div onClick={onClick} style={{ fontSize: "calc(22px + 1vw)" }}>
+                  <ArrowRightIcon fontSize="inherit" />
+                </div>
+              )}
+              {desplegado && (
+                <div onClick={onClick} style={{ fontSize: "calc(22px + 1vw)" }}>
+                  <ArrowDropDownIcon fontSize="inherit" />
+                </div>
+              )}
             </div>
           </div>
           {desplegado && (
-            <div>
+            <div className="info-card">
               <p>Descripción: {description}</p>
               <div className="drop-info">
                 <div>
