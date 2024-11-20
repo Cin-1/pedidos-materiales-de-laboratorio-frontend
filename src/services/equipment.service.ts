@@ -58,13 +58,14 @@ const useEquipmentService = () => {
     }
   };
 
-  const updateEquipment = async (id: string, equipment: createEquipment): Promise<void> => {
+  const updateEquipment = async (_id: string, equipment: createEquipment): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
-      url: `/equipment/${id}`,
-      data: { equipment },
+      url: `/equipment/${_id}`,
+      data: equipment ,
     };
 
+    console.log("config",config.url)
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {

@@ -30,6 +30,7 @@ export default function EquipmentsView(): ReactElement {
           {
             setEquipmentData(equipments.filter(e=>!e.isSoftDeleted));
             setShowedEquipment(equipments.filter(e=>!e.isSoftDeleted));
+            
           }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -40,6 +41,7 @@ export default function EquipmentsView(): ReactElement {
 
   const onSearchResult = (input:string)=>{
     input ? setShowedEquipment(equipmentData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedEquipment(equipmentData);
+    console.log(showedEquipment)
   }
 
   const headerAttributes = {
@@ -57,16 +59,16 @@ export default function EquipmentsView(): ReactElement {
                { 
               showedEquipment.map((m,index) =>
               <div className="listElements">
-                      <Dropdown key={m.id}
+                      <Dropdown key={m._id}
                         title= {m.description} 
                         icon=  {true}
-                        desplegado= {selectedid == m.id}
+                        desplegado= {selectedid == m._id}
                         description= {m.description}
                         stock= {m.stock?.toString() || '0' }
-                        repair= {m.inRepair?.toString() || ''}
+                        repair= {m.inRepair?.toString() || '0'}
                         clase= {m.type}
-                        onClick={() => selectedid == m.id ?  setSelectedid(""): setSelectedid(m.id)}
-                        onEdition={() =>     navigate(`/equipments/${m.id}`)} 
+                        onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
+                        onEdition={() =>     navigate(`/equipments/${m._id}`)} 
                       />  
               </div>
               ) 

@@ -2,7 +2,7 @@ import { InUse } from "./in-use";
 import { SoftDelete } from "./soft-delete";
 
 export type Equipment = SoftDelete & {
-  id: string;
+  _id: string;
   type: string;
   description: string;
   stock: number;

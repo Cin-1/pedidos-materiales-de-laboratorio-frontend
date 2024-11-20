@@ -20,12 +20,11 @@ export default function EquipmentDetailView(): ReactElement {
   const navigate = useNavigate();
   const [equipmentData, setEquipmentData] = useState<Equipment>();
   const equipmentService = useEquipmentService();
-
   const [description, setDescription] = useState("");
-  const [Stock, setStock] = useState(0);
-
+  
   const [type, setType] = useState("");
-  const [Repair, setRepair] = useState(0);
+  const [Stock, setStock] = useState("");
+  const [Repair, setRepair] = useState("");
   const [UnitMeasure,setUnit] = useState("");
 
   useEffect(() => {
@@ -37,10 +36,12 @@ export default function EquipmentDetailView(): ReactElement {
             throw err;
           }
           if (equipment) {
+            setEquipmentData(equipment);
             setDescription(equipment.description);
-           //setStock((equipment.stock));
             setType(equipment.type);
-            setRepair(equipment.inRepair);
+            setRepair(equipment.inRepair.toString());
+            setStock((equipment.stock.toString()));
+            setUnit(equipment.unitMeasure);
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -74,17 +75,20 @@ export default function EquipmentDetailView(): ReactElement {
 
    const  newEquipment : createEquipment= {
         description: description,
-        stock: Stock,
+        stock: Number(Stock),
         type:type,
-        inRepair: Repair,
+        inRepair: Number(Repair),
         unitMeasure: UnitMeasure,
         isAvailable : true
       }
-
+      
      
     if (equipmentData && id) {
 
-    
+
+      console.log("id",id)
+      console.log("equipmentData",equipmentData)
+
         const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment ),
       );
       if (err) return console.log(err);
@@ -117,24 +121,25 @@ export default function EquipmentDetailView(): ReactElement {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-        
-
-            <FormControl className="formElement">
-              <InputLabel id="demo-simple-select-label">Stock</InputLabel>
+          <FormControl className="formElement">
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={Stock}
-                label="Stock"
+                value={type}
+                label="unidad de Medida"
+                onChange={(e) => setType(e.target.value as string)}
               >
-                <MenuItem value={"Suficiente"}>Suficiente</MenuItem>
-                <MenuItem value={"faltante"}>faltante</MenuItem>
-                
+                <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
+                <MenuItem value={"Goteros"}>Goteros</MenuItem>
+                <MenuItem value={"Frascos"}>Frascos</MenuItem>
+                <MenuItem value={"Bureta"}>Bureta</MenuItem>
+                <MenuItem value={"Pipeta"}>Pipeta</MenuItem>
               </Select>
             </FormControl>
 
             <FormControl className="formElement">
-              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+              <InputLabel id="demo-simple-select-label">Unidad de Medida</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -142,32 +147,21 @@ export default function EquipmentDetailView(): ReactElement {
                 label="unidad de Medida"
                 onChange={(e) => setUnit(e.target.value)}
               >
-                <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
-                <MenuItem value={"equipo general"}>Tubos de ensayo</MenuItem>
+                <MenuItem value={"Tubos de ensayo"}>unidad</MenuItem>
+                <MenuItem value={"equipo general"}>medida</MenuItem>
               </Select>
             </FormControl>
 
-        <FormControl className="formElement">
-              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={type}
-                label="unidad de Medida"
-                onChange={(e) => setType(e.target.value)}
-              >
-                <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
-                <MenuItem value={"equipo general"}>Tubos de ensayo</MenuItem>
-              </Select>
-            </FormControl>
-            
-            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined"
-            onChange={(e) => setRepair(Number(e.target.value) || 0)} />
-            <div className="buttons">
-              <Button type="submit" variant="contained">
-                Grabar
-              </Button>
-            </div>
+
+          <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
+                        onChange={(e) => setStock(e.target.value)}
+                        value={Stock}
+            />
+            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" 
+                        onChange={(e) => setRepair(e.target.value)}
+                        value={Repair}
+              />
+
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
                 <Fab color="success" aria-label="save" type="submit"  >

@@ -36,6 +36,7 @@ export default function MaterialDetailView(): ReactElement {
             throw err;
           }
           if (material) {
+            setMaterialData(material);
             console.log(material.stock)
             setDescription(material.description);
             setunit(material.unitMeasure);
@@ -94,6 +95,7 @@ console.log( {
           inRepair: Repair,
         })
     if (materialData && id) {
+      console.log("actualizado")
       const [, err] = await handlePromise<void, string>(
         materialService.updateMaterial(id, {
           description: description,
@@ -106,6 +108,8 @@ console.log( {
       if (err) return console.log(err);
       navigate(-1);
     } else {
+      console.log("creado")
+
       const [, err] = await handlePromise<void, string>(
         materialService.addMaterial({
           description: description,
