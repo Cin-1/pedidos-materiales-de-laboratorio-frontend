@@ -1,5 +1,4 @@
 import React, { MouseEvent, ReactElement } from "react";
-import { Link } from "react-router-dom";
 import { EditOutlined } from "@mui/icons-material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -50,6 +49,7 @@ export default function Dropdown({
               {desplegado && (
                 <div onClick={onClick} style={{ fontSize: "calc(22px + 1vw)" }}>
                   <ArrowDropDownIcon fontSize="inherit" />
+
                 </div>
               )}
             </div>
