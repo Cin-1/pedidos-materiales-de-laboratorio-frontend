@@ -7,7 +7,15 @@ export type Equipment = SoftDelete & {
   description: string;
   stock: number;
   unitMeasure: string;
-  inUse: InUse[];
-  inRepair?: number;
-  available: boolean;
+  inRepair: number;
+  isAvailable: boolean;};
+
+
+export type createEquipment = SoftDelete & {
+  type: string;
+  description: string;
+  stock: number;
+  unitMeasure: string;
+  inRepair: number;
+  isAvailable: boolean;
 };

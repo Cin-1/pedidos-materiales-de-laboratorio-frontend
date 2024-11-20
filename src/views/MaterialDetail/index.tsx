@@ -24,8 +24,8 @@ export default function MaterialDetailView(): ReactElement {
   const [description, setDescription] = useState("");
   const [unit, setunit] = useState("");
   const [type, settype] = useState("");
-  const [Stock, setStock] = useState(0);
-  const [Repair, setRepair] = useState(0);
+  const [Stock, setStock] = useState("");
+  const [Repair, setRepair] = useState("");
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -36,11 +36,12 @@ export default function MaterialDetailView(): ReactElement {
             throw err;
           }
           if (material) {
+            console.log(material.stock)
             setDescription(material.description);
             setunit(material.unitMeasure);
             settype(material.type);
-            setStock(material.stock);
-            setRepair(material.inRepair ? material.inRepair : 0);
+            setStock(material.stock.toString());
+            setRepair(material.inRepair?.toString() || "");
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -85,14 +86,21 @@ export default function MaterialDetailView(): ReactElement {
       return;
     }
  */
+console.log( {
+          description: description,
+          unitMeasure: unit,
+          type: type,
+          stock: Stock,
+          inRepair: Repair,
+        })
     if (materialData && id) {
       const [, err] = await handlePromise<void, string>(
         materialService.updateMaterial(id, {
           description: description,
           unitMeasure: unit,
           type: type,
-          stock: Stock,
-          inRepair: Repair,
+          stock: Number(Stock),
+          inRepair: Number(Repair),
         }),
       );
       if (err) return console.log(err);
@@ -103,8 +111,8 @@ export default function MaterialDetailView(): ReactElement {
           description: description,
           unitMeasure: unit,
           type: type,
-          stock: Stock,
-          inRepair: Repair,
+          stock: Number(Stock),
+          inRepair: Number(Repair),
         }),
       );
       if (err) return console.log(err);
@@ -166,8 +174,14 @@ export default function MaterialDetailView(): ReactElement {
               </Select>
             </FormControl>
 
-            <TextField id="Stock" className="formElement" label="Stock" variant="outlined" />
-            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" />
+            <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
+                        onChange={(e) => setStock(e.target.value)}
+                        value={Stock}
+            />
+            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" 
+                        onChange={(e) => setRepair(e.target.value)}
+                        value={Repair}
+              />
             <div className="buttons">
               <Button type="submit" variant="contained">
                 Grabar
