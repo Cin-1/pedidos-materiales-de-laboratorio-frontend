@@ -29,15 +29,18 @@ export default function Register(): ReactElement {
       return;
     }
 
-    const [, err] = await handlePromise<void, string>(register(
-      {
-         name: formData.nombre
-        ,lastName: formData.apellido
-        ,password: formData.password
-        ,email: formData.email
-        ,dni: formData.dni
-      }
-      , token));
+    const [, err] = await handlePromise<void, string>(
+      register(
+        {
+          name: formData.nombre,
+          lastName: formData.apellido,
+          password: formData.password,
+          email: formData.email,
+          dni: formData.dni,
+        },
+        token,
+      ),
+    );
     if (err) return setError(err);
     navigate("/login");
   };
