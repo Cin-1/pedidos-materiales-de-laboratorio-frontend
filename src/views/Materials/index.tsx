@@ -11,6 +11,9 @@ import  useUserService  from "../../services/user.service"
 import { Fab } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import { SelectOptions } from "../../types/shared";
+import useSharedService from "../../services/shared.service"
+
 
 
 export default function MaterialsView(): ReactElement {
@@ -20,16 +23,26 @@ export default function MaterialsView(): ReactElement {
   const [showedMaterial, setShowedMaterial] = useState<Material[]>([]);
   const [selectedid, setSelectedid] = useState<string>('');
   const materialService = useMaterialService();
+  const sharedService = useSharedService();
+  const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+
 
   useEffect(()=>{ 
     const fetchMaterials = async () => {
-      const [materials, err] = await handlePromise(materialService.getMaterials());      
+      const [materials, err] = await handlePromise(materialService.getMaterials());    
+      const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
+
       try {
         if (err)  {throw(err)}
         if(materials) {
-          setMaterialData(materials);
-          setShowedMaterial(materials);
+          setMaterialData(materials.filter(e=>!e.isSoftDeleted));
+          setShowedMaterial(materials.filter(e=>!e.isSoftDeleted));
         }
+         if (Types)
+          {
+            setTypeOptions(Types);
+            
+          }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -39,7 +52,7 @@ export default function MaterialsView(): ReactElement {
 
   const onSearchResult = (input:string)=>{
     input ? setShowedMaterial(materialData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedMaterial(materialData);
-  }
+   }
 
   const headerAttributes = {
     title: "materiales",
@@ -50,33 +63,34 @@ export default function MaterialsView(): ReactElement {
   }
 
   return <>
-    <Header {...headerAttributes}></Header>
-    <main>
-      <div  className="body">              
-               { 
-              showedMaterial.map((m,index) =>
-              <div className="listElements">
-                      <Dropdown key={m._id}
-                        title= {m.description} 
-                        icon=  {true}
-                        desplegado= {selectedid == m._id}
-                        description= {m.description}
-                        stock= {m.stock?.toString() || '0' }
-                        repair= {m.inRepair?.toString() || ''}
-                        clase= {m.type}
-                        onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
-                        onEdition={() =>     navigate(`/materials/${m._id}`)} 
-                      />  
-              </div>
-              ) 
-              } 
+      <Header {...headerAttributes}></Header>
+    
+      <main>
+        <div  className="body">              
+                { 
+                showedMaterial.map((m,index) =>
+                <div className="listElements">
+                        <Dropdown key={m._id}
+                          title= {m.description} 
+                          icon=  {true}
+                          desplegado= {selectedid == m._id}
+                          description= {m.description}
+                          stock= {m.stock?.toString() || '0' }
+                          repair= {m.inRepair?.toString() || ''}
+                          clase= {TypeOptions.find(t => t.value == m.type)?.text || ''}
+                          onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
+                          onEdition={() =>     navigate(`/materials/${m._id}`)} 
+                        />  
+                </div>
+                ) 
+                } 
         </div>  
       </main>
+      
       <div className="fbuttons">
         <Fab color="primary" aria-label="add" onClick={ () => navigate('New') } >
           <AddIcon />
         </Fab>
       </div>
-      <MobileNav></MobileNav>
     </>;
 }

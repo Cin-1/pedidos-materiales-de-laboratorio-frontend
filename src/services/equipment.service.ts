@@ -1,6 +1,6 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { Equipment } from "../types/equipment";
+import { createEquipment, Equipment } from "../types/equipment";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const useEquipmentService = () => {
@@ -44,7 +44,7 @@ const useEquipmentService = () => {
     return response.data;
   };
 
-  const addEquipment = async (equipment: Equipment): Promise<void> => {
+  const addEquipment = async (equipment: createEquipment): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/equipment`,
@@ -58,13 +58,14 @@ const useEquipmentService = () => {
     }
   };
 
-  const updateEquipment = async (id: string, equipment: Equipment): Promise<void> => {
+  const updateEquipment = async (_id: string, equipment: createEquipment): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
-      url: `/equipment/${id}`,
-      data: { equipment },
+      url: `/equipment/${_id}`,
+      data: equipment ,
     };
 
+    console.log("config",config.url)
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {

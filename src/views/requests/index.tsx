@@ -20,6 +20,7 @@ export default function RequestsView(): ReactElement {
         if (err) {
           throw err;
         }
+        console.log(requesteds)
         if (requesteds) {
           setRequestData(requesteds);
           setShowedRequest(requesteds);
@@ -30,6 +31,7 @@ export default function RequestsView(): ReactElement {
       } catch (error) {
         setRequestData([]);
         setShowedRequest([]);
+        
       }
     };
     fetchRequests();
@@ -59,7 +61,7 @@ export default function RequestsView(): ReactElement {
               <CardRequest
                 title={requested.description}
                 date={requested.usageDate.toString()}
-                laboratory={requested.labNumber?.toString() || ""}
+                laboratory={requested.lab?.toString() || ""}
                 building={requested.building || ""}
                 proffesor={requested.requestantUser}
                 students={requested.studentsNumber.toString()}

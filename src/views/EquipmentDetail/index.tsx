@@ -2,10 +2,9 @@ import React, { FormEvent, ReactElement, useEffect, useRef, useState } from "rea
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
-import useMaterialService from "../../services/material.service";
-import useSharedService from "../../services/shared.service"
+import useEquipmentService from "../../services/equipment.service";
 import handlePromise from "../../utils/promise";
-import { Material } from "../../types/material";
+import { createEquipment, Equipment } from "../../types/equipment";
 import TextField from "@mui/material/TextField";
 import { Button, Fab } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -15,44 +14,41 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
+import useSharedService from '../../services/shared.service'
 import { SelectOptions } from "../../types/shared";
 
-
-
-export default function MaterialDetailView(): ReactElement {
+export default function EquipmentDetailView(): ReactElement {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [materialData, setMaterialData] = useState<Material>();
-  const materialService = useMaterialService();
-
+  const [equipmentData, setEquipmentData] = useState<Equipment>();
+  const equipmentService = useEquipmentService();
   const [description, setDescription] = useState("");
-  const [unit, setunit] = useState("");
-  const [type, settype] = useState("");
+  
+  const [type, setType] = useState("");
   const [Stock, setStock] = useState("");
   const [Repair, setRepair] = useState("");
+  const [UnitMeasure,setUnit] = useState("");
+
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
-  
+
 
   useEffect(() => {
-    const fetchMaterials = async () => {
+    const fetchEquipments = async () => {
       if (id) {
         try {
-          const [material, err] = await handlePromise(materialService.getMaterial(id));
-          const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
-
-          
+          const [equipment, err] = await handlePromise(equipmentService.getEquipment(id));
+          const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
           if (err) {
             throw err;
           }
-          if (material) {
-            setMaterialData(material);
-            console.log(material.stock)
-            setDescription(material.description);
-            setunit(material.unitMeasure);
-            settype(material.type);
-            setStock(material.stock.toString());
-            setRepair(material.inRepair?.toString() || "");
+          if (equipment) {
+            setEquipmentData(equipment);
+            setDescription(equipment.description);
+            setType(equipment.type);
+            setRepair(equipment.inRepair.toString());
+            setStock((equipment.stock.toString()));
+            setUnit(equipment.unitMeasure);
           }
           if (Types){
             setTypeOptions(Types)
@@ -63,22 +59,22 @@ export default function MaterialDetailView(): ReactElement {
       }
     };
 
-    fetchMaterials();
+    fetchEquipments();
   }, []);
 
   
   const headerAttributes = {
-    title: "material",
+    title: "Equipo",
     enableSearch: false,
     backArrow: true,
-    icon: "material.svg",
-    searchPlaceholder: "Buscar Material",
+    icon: "equipment.svg",
+    searchPlaceholder: "Buscar Equipo",
   };
 
  const onDelete = async(): Promise<void> =>
      {
         if (id) {
-          const [, err] = await handlePromise<void, string>(materialService.removeMaterial(id), );
+          const [, err] = await handlePromise<void, string>(equipmentService.removeEquipment(id), );
           if (err) return console.log(err);
           navigate(-1);
       }
@@ -86,54 +82,34 @@ export default function MaterialDetailView(): ReactElement {
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const formData = {
-      description: description,
-      unit: unit,
-      type: type,
-      Stock: Stock,
-      Repair: Repair,
-    };
 
-    /*     const validationError = validateForm(formData);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
- */
-console.log( {
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Stock,
-          inRepair: Repair,
-        })
-    if (materialData && id) {
+   const  newEquipment : createEquipment= {
+        description: description,
+        stock: Number(Stock),
+        type:type,
+        inRepair: Number(Repair),
+        unitMeasure: UnitMeasure,
+        isAvailable : true
+      }
+      
+     
+    if (equipmentData && id) {
 
-      const [, err] = await handlePromise<void, string>(
-        materialService.updateMaterial(id, {
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Number(Stock),
-          inRepair: Number(Repair),
-        }),
+
+      console.log("id",id)
+      console.log("equipmentData",equipmentData)
+
+        const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment ),
       );
       if (err) return console.log(err);
       navigate(-1);
     } else {
-    
-
+     
       const [, err] = await handlePromise<void, string>(
-        materialService.addMaterial({
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Number(Stock),
-          inRepair: Number(Repair),
-        }),
+        equipmentService.addEquipment(newEquipment), 
       );
       if (err) return console.log(err);
-      navigate(-1);
+      navigate(-1); 
     }
   };
 
@@ -155,38 +131,40 @@ console.log( {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            <FormControl className="formElement">
-              <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={unit}
-                label="unidad de Medida"
-                onChange={(e) => setunit(e.target.value as string)}
-              >
-                
-                <MenuItem value={"Unidades"}>Unidades</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl className="formElement">
+          <FormControl className="formElement">
               <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
-                label="unidad de Medida"
-                onChange={(e) => settype(e.target.value as string)}
+                label="Tipo"
+                onChange={(e) => setType(e.target.value as string)}
               >
-                  {
+                {
                   TypeOptions.map((t,index) => 
                     <MenuItem value={t.value}>{t.text}</MenuItem>
                   )         
                 }
+                
               </Select>
             </FormControl>
 
-            <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
+            <FormControl className="formElement">
+              <InputLabel id="demo-simple-select-label">Unidad de Medida</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={UnitMeasure}
+                label="unidad de Medida"
+                onChange={(e) => setUnit(e.target.value)}
+              >
+                <MenuItem value={"Tubos de ensayo"}>unidad</MenuItem>
+                <MenuItem value={"equipo general"}>medida</MenuItem>
+              </Select>
+            </FormControl>
+
+
+          <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
                         onChange={(e) => setStock(e.target.value)}
                         value={Stock}
             />
@@ -194,11 +172,7 @@ console.log( {
                         onChange={(e) => setRepair(e.target.value)}
                         value={Repair}
               />
-            <div className="buttons">
-              <Button type="submit" variant="contained">
-                Grabar
-              </Button>
-            </div>
+
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
                 <Fab color="success" aria-label="save" type="submit"  >
@@ -206,7 +180,7 @@ console.log( {
                 </Fab>
               </div>
               {id!="New"? 
-              <Fab color="error" aria-label="borrar" onClick={() => {onDelete()}}>
+              <Fab color="error" aria-label="borrar" onClick={(e) => {onDelete()}}>
                 <Delete />
               </Fab>:
               <div/>}

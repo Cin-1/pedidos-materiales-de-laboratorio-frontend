@@ -1,7 +1,11 @@
 import React, { FormEvent, ReactElement } from "react";
-import "./styles.scss";
-import { ImagesearchRoller } from "@mui/icons-material";
-import { ZoomIn, ArrowDropUp } from "@mui/icons-material";
+
+import './styles.scss'
+import { ImagesearchRoller, SearchOutlined } from "@mui/icons-material"
+import { ZoomIn,ArrowDropUp }  from "@mui/icons-material"
+import { Icon } from "@mui/material";
+
+
 
 export type SearchProps = {
   placeholder: string;
@@ -16,9 +20,11 @@ export default function Search({ placeholder, callback }: SearchProps): ReactEle
   };
 
   return (
+
     <form onSubmit={onSearch} className="searchform">
       <img src={`img/header/search.svg`}></img>
       <input className="searcher" type="text" name="input" id="input" placeholder={placeholder} />
     </form>
+
   );
 }

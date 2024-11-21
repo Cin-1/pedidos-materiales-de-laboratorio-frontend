@@ -18,9 +18,7 @@ form {
   @include breakpoint(small) {
     display: flex;
     position: fixed;
-
-    bottom: 0;
-
+    bottom: 2%;
     right: 0;
   }
 }
