@@ -18,6 +18,7 @@ import MaterialDetailsView from "./views/MaterialDetail";
 import EquipmentDetailsView from "./views/EquipmentDetail";
 import EquipmentsView from "./views/Equipments";
 import UserProfile from "./views/userProfile/UserProfile";
+import ReactivesView from "./views/Reactives";
 
 function App() {
   const [text, useText] = useState([]);
@@ -39,6 +40,7 @@ function App() {
 
               <Route path="/equipments" element={<EquipmentsView />} />
               <Route path="/equipments/:id" element={<EquipmentDetailsView />} />
+              <Route path="/Reactives/" element={<ReactivesView />} />
             </Route>
 
             <Route path="/profile" element={<UserProfile />} />

@@ -1,0 +1,20 @@
+@import "../../globals.scss";
+
+.title {
+  font-weight: 500;
+  text-decoration: none;
+  color: color("text-secondary");
+  font-size: 14px;
+}
+
+.listElements {
+  padding: 8px 8px;
+}
+
+.fbuttons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 60px;
+  padding: 0% 5% 15%;
+}
