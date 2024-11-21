@@ -14,6 +14,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
+import useSharedService from '../../services/shared.service'
+import { SelectOptions } from "../../types/shared";
 
 export default function EquipmentDetailView(): ReactElement {
   const { id } = useParams();
@@ -27,11 +29,16 @@ export default function EquipmentDetailView(): ReactElement {
   const [Repair, setRepair] = useState("");
   const [UnitMeasure,setUnit] = useState("");
 
+  const sharedService = useSharedService();
+  const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+
+
   useEffect(() => {
     const fetchEquipments = async () => {
       if (id) {
         try {
           const [equipment, err] = await handlePromise(equipmentService.getEquipment(id));
+          const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
           if (err) {
             throw err;
           }
@@ -42,6 +49,9 @@ export default function EquipmentDetailView(): ReactElement {
             setRepair(equipment.inRepair.toString());
             setStock((equipment.stock.toString()));
             setUnit(equipment.unitMeasure);
+          }
+          if (Types){
+            setTypeOptions(Types)
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -127,14 +137,15 @@ export default function EquipmentDetailView(): ReactElement {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
-                label="unidad de Medida"
+                label="Tipo"
                 onChange={(e) => setType(e.target.value as string)}
               >
-                <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
-                <MenuItem value={"Goteros"}>Goteros</MenuItem>
-                <MenuItem value={"Frascos"}>Frascos</MenuItem>
-                <MenuItem value={"Bureta"}>Bureta</MenuItem>
-                <MenuItem value={"Pipeta"}>Pipeta</MenuItem>
+                {
+                  TypeOptions.map((t,index) => 
+                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                  )         
+                }
+                
               </Select>
             </FormControl>
 

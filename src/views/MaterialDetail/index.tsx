@@ -3,6 +3,7 @@ import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
 import useMaterialService from "../../services/material.service";
+import useSharedService from "../../services/shared.service"
 import handlePromise from "../../utils/promise";
 import { Material } from "../../types/material";
 import TextField from "@mui/material/TextField";
@@ -14,6 +15,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
+import { SelectOptions } from "../../types/shared";
+
+
 
 export default function MaterialDetailView(): ReactElement {
   const { id } = useParams();
@@ -26,12 +30,18 @@ export default function MaterialDetailView(): ReactElement {
   const [type, settype] = useState("");
   const [Stock, setStock] = useState("");
   const [Repair, setRepair] = useState("");
+  const sharedService = useSharedService();
+  const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+  
 
   useEffect(() => {
     const fetchMaterials = async () => {
       if (id) {
         try {
           const [material, err] = await handlePromise(materialService.getMaterial(id));
+          const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
+
+          
           if (err) {
             throw err;
           }
@@ -43,6 +53,9 @@ export default function MaterialDetailView(): ReactElement {
             settype(material.type);
             setStock(material.stock.toString());
             setRepair(material.inRepair?.toString() || "");
+          }
+          if (Types){
+            setTypeOptions(Types)
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -95,7 +108,7 @@ console.log( {
           inRepair: Repair,
         })
     if (materialData && id) {
-      console.log("actualizado")
+
       const [, err] = await handlePromise<void, string>(
         materialService.updateMaterial(id, {
           description: description,
@@ -108,7 +121,7 @@ console.log( {
       if (err) return console.log(err);
       navigate(-1);
     } else {
-      console.log("creado")
+    
 
       const [, err] = await handlePromise<void, string>(
         materialService.addMaterial({
@@ -151,13 +164,8 @@ console.log( {
                 label="unidad de Medida"
                 onChange={(e) => setunit(e.target.value as string)}
               >
-                <MenuItem value={"u"}>Unidades</MenuItem>
-                <MenuItem value={"d"}>Docenas</MenuItem>
-                <MenuItem value={"cm"}>centimetros Cubicos</MenuItem>
-                <MenuItem value={"ml"}>miliLitros</MenuItem>
-                <MenuItem value={"mg"}>miliGramos</MenuItem>
-                <MenuItem value={"Copas mundiales"}>Copas mundiales</MenuItem>
-
+                
+                <MenuItem value={"Unidades"}>Unidades</MenuItem>
               </Select>
             </FormControl>
 
@@ -170,11 +178,11 @@ console.log( {
                 label="unidad de Medida"
                 onChange={(e) => settype(e.target.value as string)}
               >
-                <MenuItem value={"Tubos de ensayo"}>Tubos de ensayo</MenuItem>
-                <MenuItem value={"Goteros"}>Goteros</MenuItem>
-                <MenuItem value={"Frascos"}>Frascos</MenuItem>
-                <MenuItem value={"Bureta"}>Bureta</MenuItem>
-                <MenuItem value={"Pipeta"}>Pipeta</MenuItem>
+                  {
+                  TypeOptions.map((t,index) => 
+                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                  )         
+                }
               </Select>
             </FormControl>
 

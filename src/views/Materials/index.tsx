@@ -11,6 +11,9 @@ import  useUserService  from "../../services/user.service"
 import { Fab } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import { SelectOptions } from "../../types/shared";
+import useSharedService from "../../services/shared.service"
+
 
 
 export default function MaterialsView(): ReactElement {
@@ -20,16 +23,26 @@ export default function MaterialsView(): ReactElement {
   const [showedMaterial, setShowedMaterial] = useState<Material[]>([]);
   const [selectedid, setSelectedid] = useState<string>('');
   const materialService = useMaterialService();
+  const sharedService = useSharedService();
+  const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+
 
   useEffect(()=>{ 
     const fetchMaterials = async () => {
-      const [materials, err] = await handlePromise(materialService.getMaterials());      
+      const [materials, err] = await handlePromise(materialService.getMaterials());    
+      const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
+
       try {
         if (err)  {throw(err)}
         if(materials) {
           setMaterialData(materials.filter(e=>!e.isSoftDeleted));
           setShowedMaterial(materials.filter(e=>!e.isSoftDeleted));
         }
+         if (Types)
+          {
+            setTypeOptions(Types);
+            
+          }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -64,7 +77,7 @@ export default function MaterialsView(): ReactElement {
                           description= {m.description}
                           stock= {m.stock?.toString() || '0' }
                           repair= {m.inRepair?.toString() || ''}
-                          clase= {m.type}
+                          clase= {TypeOptions.find(t => t.value == m.type)?.text || ''}
                           onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
                           onEdition={() =>     navigate(`/materials/${m._id}`)} 
                         />  

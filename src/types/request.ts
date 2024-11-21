@@ -19,13 +19,13 @@ export interface MaterialRequest {
 }
 
 export interface Request {
-  id: string;
+  
   requestantUser: string;
   assignedUser: string;
   description: string;
-  requestDate: Date;
+  creationDate: Date;
   usageDate: Date;
-  labNumber?: number;
+  lab?: Number;
   type: string;
   studentsNumber: number;
   building?: string;
@@ -33,8 +33,12 @@ export interface Request {
   observations?: string;
   subject: string;
   tpNumber: number;
-  messages: string[];
+  messages: string;
   equipments: string[];
-  reactives: ReactiveRequest[];
-  materials: MaterialRequest[];
+  reactives: string[];
+  materials: string[];
+  requestNumber: number;
+  isCompleted:  boolean;
+  isRejected:  boolean;
+  isExpired: boolean;
 }

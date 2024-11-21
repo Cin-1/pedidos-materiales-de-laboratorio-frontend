@@ -3,6 +3,7 @@ import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
 import useEquipmentService from "../../services/equipment.service";
+import useSharedService from "../../services/shared.service"
 import handlePromise from "../../utils/promise";
 import { Equipment } from "../../types/equipment";
 import { User } from "../../types/user";
@@ -11,6 +12,8 @@ import  useUserService  from "../../services/user.service"
 import { Fab } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import { SelectOptions } from "../../types/shared";
+
 
 
 export default function EquipmentsView(): ReactElement {
@@ -20,16 +23,27 @@ export default function EquipmentsView(): ReactElement {
   const [showedEquipment, setShowedEquipment] = useState<Equipment[]>([]);
   const [selectedid, setSelectedid] = useState<string>('');
   const equipmentService = useEquipmentService();
+  const sharedService = useSharedService();
+  const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+
 
   useEffect(()=>{ 
     const fetchEquipments = async () => {
-      const [equipments, err] = await handlePromise(equipmentService.getEquipments());      
+      const [equipments, err] = await handlePromise(equipmentService.getEquipments());
+      const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
+      
+      
+      
       try {
         if (err)  {throw(err)}
         if(equipments) 
           {
             setEquipmentData(equipments.filter(e=>!e.isSoftDeleted));
             setShowedEquipment(equipments.filter(e=>!e.isSoftDeleted));
+          }
+          if (Types)
+          {
+            setTypeOptions(Types);
             
           }
       } catch (error) {
@@ -41,7 +55,6 @@ export default function EquipmentsView(): ReactElement {
 
   const onSearchResult = (input:string)=>{
     input ? setShowedEquipment(equipmentData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedEquipment(equipmentData);
-    console.log(showedEquipment)
   }
 
   const headerAttributes = {
@@ -63,10 +76,10 @@ export default function EquipmentsView(): ReactElement {
                         title= {m.description} 
                         icon=  {true}
                         desplegado= {selectedid == m._id}
-                        description= {m.description}
+                        description= {TypeOptions.find(t => t.value == m.type)?.text || ''}
                         stock= {m.stock?.toString() || '0' }
                         repair= {m.inRepair?.toString() || '0'}
-                        clase= {m.type}
+                        clase= { '' }
                         onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
                         onEdition={() =>     navigate(`/equipments/${m._id}`)} 
                       />  

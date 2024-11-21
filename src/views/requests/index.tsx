@@ -61,7 +61,7 @@ export default function RequestsView(): ReactElement {
               <CardRequest
                 title={requested.description}
                 date={requested.usageDate.toString()}
-                laboratory={requested.labNumber?.toString() || ""}
+                laboratory={requested.lab?.toString() || ""}
                 building={requested.building || ""}
                 proffesor={requested.requestantUser}
                 students={requested.studentsNumber.toString()}
