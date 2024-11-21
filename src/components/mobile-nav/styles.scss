@@ -3,7 +3,7 @@
 nav.mobile {
   position: fixed;
   bottom: 0;
-  height: 80px;
+  height: 95px;
   left: 0;
   right: 0;
   padding: 0 20% 0 20%;
@@ -17,11 +17,11 @@ nav.mobile {
     flex-direction: column;
     align-items: center;
     color: color("accent");
-    font-size: 2.2em;
+    font-size: 1.9em;
     text-decoration: none;
     text-transform: capitalize;
     .nav-icon {
-      height: 1.5em;
+      height: 1.4em;
     }
   }
   @include breakpoint(small) {

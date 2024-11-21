@@ -1,7 +1,6 @@
 @import "../../globals.scss";
 
 .drop {
-
   text-decoration: none;
   color: color("text-secondary");
   font: "Lato";
@@ -26,7 +25,7 @@
 .drop-title {
   color: color("text-primary");
   font-style: normal;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
   @include breakpoint(small) {
     font-size: 12px;
