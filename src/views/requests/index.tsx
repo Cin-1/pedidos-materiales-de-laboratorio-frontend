@@ -20,18 +20,14 @@ export default function RequestsView(): ReactElement {
         if (err) {
           throw err;
         }
-        console.log(requesteds)
+        console.log(requesteds);
         if (requesteds) {
           setRequestData(requesteds);
           setShowedRequest(requesteds);
         }
-        if (requesteds) {
-          setRequestData(requesteds);
-        }
       } catch (error) {
         setRequestData([]);
         setShowedRequest([]);
-        
       }
     };
     fetchRequests();
