@@ -1,26 +1,11 @@
 @import "../../globals.scss";
 
-form {
-  display: flex;
-  flex-direction: column;
-  max-width: 800px;
-  gap: 2em;
-  background-color: rgba($color: #000000, $alpha: 0.2);
-  padding: 20px;
-  border-radius: 5px;
-
-  small {
-    color: red;
-  }
-}
 .fbuttons {
   display: none;
   @include breakpoint(small) {
     display: flex;
     position: fixed;
-
     bottom: 0;
-
     right: 0;
   }
 }
@@ -35,18 +20,12 @@ form {
   padding: 8px 8px;
 }
 
-.body {
-  margin: 6% 0% 0% 0%;
-}
-
 .formEndStyle {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-
+  justify-content: center;
   padding-left: 0%;
   padding-right: 0%;
-
+  max-width: 100%;
 }
 
 .formElement {

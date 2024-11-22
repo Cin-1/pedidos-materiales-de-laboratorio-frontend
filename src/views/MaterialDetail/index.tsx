@@ -3,7 +3,7 @@ import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
 import useMaterialService from "../../services/material.service";
-import useSharedService from "../../services/shared.service"
+import useSharedService from "../../services/shared.service";
 import handlePromise from "../../utils/promise";
 import { Material } from "../../types/material";
 import TextField from "@mui/material/TextField";
@@ -11,13 +11,11 @@ import { Button, Fab } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
 import { SelectOptions } from "../../types/shared";
-
-
 
 export default function MaterialDetailView(): ReactElement {
   const { id } = useParams();
@@ -32,11 +30,12 @@ export default function MaterialDetailView(): ReactElement {
   const [Repair, setRepair] = useState("");
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
-  
 
   useEffect(() => {
     const fetchMaterials = async () => {
 
+          if (err) {
+            throw err;
          const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
           
           if (err2) {throw err2;}
@@ -70,7 +69,6 @@ export default function MaterialDetailView(): ReactElement {
     fetchMaterials();
   }, []);
 
-  
   const headerAttributes = {
     title: "material",
     enableSearch: false,
@@ -79,14 +77,13 @@ export default function MaterialDetailView(): ReactElement {
     searchPlaceholder: "Buscar Material",
   };
 
- const onDelete = async(): Promise<void> =>
-     {
-        if (id) {
-          const [, err] = await handlePromise<void, string>(materialService.removeMaterial(id), );
-          if (err) return console.log(err);
-          navigate(-1);
-      }
-     }
+  const onDelete = async (): Promise<void> => {
+    if (id) {
+      const [, err] = await handlePromise<void, string>(materialService.removeMaterial(id));
+      if (err) return console.log(err);
+      navigate(-1);
+    }
+  };
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -104,15 +101,14 @@ export default function MaterialDetailView(): ReactElement {
       return;
     }
  */
-console.log( {
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Stock,
-          inRepair: Repair,
-        })
+    console.log({
+      description: description,
+      unitMeasure: unit,
+      type: type,
+      stock: Stock,
+      inRepair: Repair,
+    });
     if (materialData && id) {
-
       const [, err] = await handlePromise<void, string>(
         materialService.updateMaterial(id, {
           description: description,
@@ -125,8 +121,6 @@ console.log( {
       if (err) return console.log(err);
       navigate(-1);
     } else {
-    
-
       const [, err] = await handlePromise<void, string>(
         materialService.addMaterial({
           description: description,
@@ -146,7 +140,6 @@ console.log( {
       <Header {...headerAttributes}></Header>
 
       <main>
-        <div className="body">
           <form onSubmit={onsubmit} className="formEndStyle">
             <TextField
               id="description"
@@ -215,14 +208,12 @@ console.log( {
               {id!="New"? 
               <Fab color="error" aria-label="borrar" onClick={() => {onDelete()}}>
                 <Delete />
-              </Fab>:
-              <div/>}
-              
-            </div>
-          </form>
-        </div>
+              </Fab>
+            ) : (
+              <div />
+            )}
+        </form>
       </main>
-      <MobileNav />
     </>
   );
 }
