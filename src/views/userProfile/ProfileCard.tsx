@@ -217,7 +217,7 @@ export default function ProfileCard() {
         <Link
           component="button"
           type="button"
-          onClick={handleCloseSession()}
+          onClick={handleCloseSession}
           variant="body2"
           sx={{ alignSelf: "center" }}
         >
