@@ -11,6 +11,8 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "./ForgotPassword";
 import { CancelOutlined, EditOutlined } from "@mui/icons-material";
+import useUserService from "../../services/user.service";
+import handlePromise from "../../utils/promise";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -26,12 +28,39 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function ProfileCard() {
+  const userService = useUserService();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [NombreError, setNombreError] = React.useState(false);
   const [NombreErrorMessage, setNombreErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [editProfile, setEditProfile] = React.useState(false);
+  const [userData, setUserData] = React.useState({ nombre: "", apellido: "", email: "", dni: 0 });
+
+  React.useEffect(() => {
+    const fetchMaterials = async () => {
+      try {
+        //ver como traer esto
+        const [userData, err] = await handlePromise(userService.getUser("id"));
+
+        if (err) {
+          throw err;
+        }
+        if (userData) {
+          setUserData({
+            nombre: userData.name || "",
+            apellido: userData.lastName || "",
+            email: userData.email || "",
+            dni: userData.dni || 0,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMaterials();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,8 +122,8 @@ export default function ProfileCard() {
             helperText={emailErrorMessage}
             id="email"
             type="email"
-            name="email"
-            placeholder="your@email.com"
+            name="your@email.com"
+            placeholder={userData.email}
             autoComplete="email"
             autoFocus
             required
@@ -112,7 +141,7 @@ export default function ProfileCard() {
             error={NombreError}
             helperText={NombreErrorMessage}
             name="Nombre"
-            placeholder="Nombre" //llamadaAPi
+            placeholder={userData.nombre}
             type="Nombre"
             id="Nombre"
             autoComplete="current-Nombre"
@@ -132,7 +161,7 @@ export default function ProfileCard() {
             error={NombreError}
             helperText={NombreErrorMessage}
             name="Apellido"
-            placeholder="Apellido" //llamadaAPi
+            placeholder={userData.apellido}
             type="Nombre"
             id="Nombre"
             autoComplete="current-Nombre"
@@ -145,14 +174,14 @@ export default function ProfileCard() {
         </FormControl>
         <FormControl>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormLabel htmlFor="Nombre">Apellido</FormLabel>
+            <FormLabel htmlFor="Nombre">Dni</FormLabel>
           </Box>
           <TextField
             disabled={!editProfile}
             error={NombreError}
             helperText={NombreErrorMessage}
             name="Dni"
-            placeholder="Dni" //llamadaAPi
+            placeholder={userData.dni.toString()}
             type="Dni"
             id="Dni"
             autoComplete="current-Dni"
