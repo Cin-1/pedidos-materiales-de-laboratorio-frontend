@@ -50,12 +50,19 @@ export default function ReactivesView(): ReactElement {
     input ? setShowedReactive(reactiveData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedReactive(reactiveData);
    }
 
+     const child = () => {
+    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
+  }
+
+  
   const headerAttributes = {
     title: "reactivos",
     enableSearch:true,
     icon: 'reactive.svg',
     searchPlaceholder: 'Buscar Reactivo',
-    searchCallback: onSearchResult
+    searchCallback: onSearchResult,
+    children:  child()
+
   }
 
   return <>

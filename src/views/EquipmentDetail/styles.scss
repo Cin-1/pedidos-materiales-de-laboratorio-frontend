@@ -18,7 +18,7 @@ form {
   @include breakpoint(small) {
     display: flex;
     position: fixed;
-    bottom: 2%;
+    bottom: 10%;
     right: 0;
   }
 }
@@ -27,6 +27,9 @@ form {
   @include breakpoint(small) {
     display: none;
   }
+}
+.tesst{
+  padding: 6%
 }
 
 .listElements {

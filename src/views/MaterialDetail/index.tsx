@@ -33,26 +33,33 @@ export default function MaterialDetailView(): ReactElement {
 
   useEffect(() => {
     const fetchMaterials = async () => {
-      if (id) {
-        try {
-          const [material, err] = await handlePromise(materialService.getMaterial(id));
-          const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
 
           if (err) {
             throw err;
+         const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
+          
+          if (err2) {throw err2;}
+          if(Types)
+          {
+            setTypeOptions(Types)
           }
-          if (material) {
+
+      if (id  && !(id =='New') ) {
+        try {
+          const [material, err] = await handlePromise(materialService.getMaterial(id));
+         
+        if (err) {
+          throw err;
+        }
+        if (material ) {
             setMaterialData(material);
-            console.log(material.stock);
             setDescription(material.description);
             setunit(material.unitMeasure);
             settype(material.type);
             setStock(material.stock.toString());
             setRepair(material.inRepair?.toString() || "");
           }
-          if (Types) {
-            setTypeOptions(Types);
-          }
+
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -133,87 +140,78 @@ export default function MaterialDetailView(): ReactElement {
       <Header {...headerAttributes}></Header>
 
       <main>
-        <form onSubmit={onsubmit} className="formEndStyle">
-          <TextField
-            id="description"
-            className="formElement"
-            multiline
-            value={description}
-            rows={4}
-            label="Descripción"
-            variant="outlined"
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <form onSubmit={onsubmit} className="formEndStyle">
+            <TextField
+              id="description"
+              className="formElement"
+              multiline
+              value={description}
+              rows={4}
+              label="description"
+              variant="outlined"
+              onChange={(e) => setDescription(e.target.value)}
+            />
 
-          <FormControl className="formElement">
-            <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={unit}
-              label="unidad de Medida"
-              onChange={(e) => setunit(e.target.value as string)}
-            >
-              <MenuItem value={"Unidades"}>Unidades</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl className="formElement">
-            <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={type}
-              label="unidad de Medida"
-              onChange={(e) => settype(e.target.value as string)}
-            >
-              {TypeOptions.map((t, index) => (
-                <MenuItem value={t.value}>{t.text}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <TextField
-            id="Stock"
-            className="formElement"
-            label="Stock"
-            variant="outlined"
-            onChange={(e) => setStock(e.target.value)}
-            value={Stock}
-          />
-          <TextField
-            id="En Reparacion"
-            className="formElement"
-            label="En Reparacion"
-            variant="outlined"
-            onChange={(e) => setRepair(e.target.value)}
-            value={Repair}
-          />
-          <div className="buttons">
-            <Button type="submit" variant="contained">
-              Grabar
-            </Button>
-          </div>
-          <div className="fbuttons">
-            <div style={{ marginRight: "1rem" }}>
-              <Fab color="success" aria-label="save" type="submit">
-                <Save />
-              </Fab>
-            </div>
-            {id != "New" ? (
-              <Fab
-                color="error"
-                aria-label="borrar"
-                onClick={() => {
-                  onDelete();
-                }}
+            <FormControl className="formElement">
+              <InputLabel id="demo-simple-select-label">Unidad/medida</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={unit}
+                label="unidad de Medida"
+                onChange={(e) => setunit(e.target.value as string)}
               >
+                
+                <MenuItem value={"Unidades"}>Unidades</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl className="formElement">
+              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={type}
+                label="unidad de Medida"
+                onChange={(e) => settype(e.target.value as string)}
+              >
+                  {
+                  TypeOptions.map((t,index) =>     <MenuItem value={t.value}>{t.text}</MenuItem>)         
+                }
+              </Select>
+            </FormControl>
+
+            <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
+                        onChange={(e) => setStock(e.target.value)}
+                        value={Stock}
+            />
+            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" 
+                        onChange={(e) => setRepair(e.target.value)}
+                        value={Repair}
+              />
+            <div className="buttons">
+              <Button type="submit" variant="contained" >
+                Grabar
+              </Button>
+
+              <Button  variant="contained" onClick={(e) => {onDelete()}}>
+                Borrar
+              </Button>
+            </div>
+
+            <div className="fbuttons">
+              <div style={{ marginRight: "1rem" }}>
+                <Fab color="success" aria-label="save" type="submit"  >
+                  <Save />
+                </Fab>
+              </div>
+              {id!="New"? 
+              <Fab color="error" aria-label="borrar" onClick={() => {onDelete()}}>
                 <Delete />
               </Fab>
             ) : (
               <div />
             )}
-          </div>
         </form>
       </main>
     </>

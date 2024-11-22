@@ -35,13 +35,15 @@ export default function EquipmentDetailView(): ReactElement {
 
   useEffect(() => {
     const fetchEquipments = async () => {
-      if (id) {
+
+      const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
+      if (err2) {throw err2;}
+      if(Types) {setTypeOptions(Types)}
+
+      if (id && !(id =='New')) {
         try {
           const [equipment, err] = await handlePromise(equipmentService.getEquipment(id));
-          const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
-          if (err) {
-            throw err;
-          }
+         
           if (equipment) {
             setEquipmentData(equipment);
             setDescription(equipment.description);
@@ -49,9 +51,6 @@ export default function EquipmentDetailView(): ReactElement {
             setRepair(equipment.inRepair.toString());
             setStock((equipment.stock.toString()));
             setUnit(equipment.unitMeasure);
-          }
-          if (Types){
-            setTypeOptions(Types)
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -94,11 +93,6 @@ export default function EquipmentDetailView(): ReactElement {
       
      
     if (equipmentData && id) {
-
-
-      console.log("id",id)
-      console.log("equipmentData",equipmentData)
-
         const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment ),
       );
       if (err) return console.log(err);
@@ -136,13 +130,13 @@ export default function EquipmentDetailView(): ReactElement {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={type}
+                value={type ?? ''}
                 label="Tipo"
                 onChange={(e) => setType(e.target.value as string)}
               >
                 {
                   TypeOptions.map((t,index) => 
-                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                    <MenuItem value={t.value }>{t.text }</MenuItem>
                   )         
                 }
                 
@@ -173,12 +167,23 @@ export default function EquipmentDetailView(): ReactElement {
                         value={Repair}
               />
 
+            <div className="buttons">
+              <Button type="submit" variant="contained">
+                Grabar
+              </Button>
+
+              <Button  variant="contained" onClick={(e) => {onDelete()}}>
+                borrar
+              </Button>
+            </div>
+
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
                 <Fab color="success" aria-label="save" type="submit"  >
                   <Save />
                 </Fab>
               </div>
+
               {id!="New"? 
               <Fab color="error" aria-label="borrar" onClick={(e) => {onDelete()}}>
                 <Delete />
