@@ -36,27 +36,31 @@ export default function MaterialDetailView(): ReactElement {
 
   useEffect(() => {
     const fetchMaterials = async () => {
-      if (id) {
+
+         const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
+          
+          if (err2) {throw err2;}
+          if(Types)
+          {
+            setTypeOptions(Types)
+          }
+
+      if (id  && !(id =='New') ) {
         try {
           const [material, err] = await handlePromise(materialService.getMaterial(id));
-          const [Types, err2] = await handlePromise(sharedService.getMaterialTypes());
-
-          
-          if (err) {
-            throw err;
-          }
-          if (material) {
+         
+        if (err) {
+          throw err;
+        }
+        if (material ) {
             setMaterialData(material);
-            console.log(material.stock)
             setDescription(material.description);
             setunit(material.unitMeasure);
             settype(material.type);
             setStock(material.stock.toString());
             setRepair(material.inRepair?.toString() || "");
           }
-          if (Types){
-            setTypeOptions(Types)
-          }
+
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -179,9 +183,7 @@ console.log( {
                 onChange={(e) => settype(e.target.value as string)}
               >
                   {
-                  TypeOptions.map((t,index) => 
-                    <MenuItem value={t.value}>{t.text}</MenuItem>
-                  )         
+                  TypeOptions.map((t,index) =>     <MenuItem value={t.value}>{t.text}</MenuItem>)         
                 }
               </Select>
             </FormControl>
@@ -195,10 +197,15 @@ console.log( {
                         value={Repair}
               />
             <div className="buttons">
-              <Button type="submit" variant="contained">
+              <Button type="submit" variant="contained" >
                 Grabar
               </Button>
+
+              <Button  variant="contained" onClick={(e) => {onDelete()}}>
+                Borrar
+              </Button>
             </div>
+
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
                 <Fab color="success" aria-label="save" type="submit"  >
