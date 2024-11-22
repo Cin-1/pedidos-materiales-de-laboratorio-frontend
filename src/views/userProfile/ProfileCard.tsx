@@ -13,6 +13,7 @@ import ForgotPassword from "./ForgotPassword";
 import { CancelOutlined, EditOutlined } from "@mui/icons-material";
 import useUserService from "../../services/user.service";
 import handlePromise from "../../utils/promise";
+import { useAuth } from "../../context/auth.context";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -29,6 +30,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function ProfileCard() {
   const userService = useUserService();
+  const authService = useAuth();
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [NombreError, setNombreError] = React.useState(false);
@@ -71,6 +74,10 @@ export default function ProfileCard() {
   };
   const handleEdit = () => {
     setEditProfile(!editProfile);
+  };
+
+  const handleCloseSession = () => {
+    authService.logout();
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -202,9 +209,19 @@ export default function ProfileCard() {
       </Box>
       <Divider></Divider>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {" "}
         <Link component="button" type="button" onClick={handleClickOpen} variant="body2" sx={{ alignSelf: "center" }}>
           ¿Olvidaste tu contraseña?
+        </Link>
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Link
+          component="button"
+          type="button"
+          onClick={handleCloseSession()}
+          variant="body2"
+          sx={{ alignSelf: "center" }}
+        >
+          Cerrar sesión
         </Link>
       </Box>
     </Card>
