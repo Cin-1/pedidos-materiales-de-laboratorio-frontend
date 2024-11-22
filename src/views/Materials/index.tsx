@@ -52,12 +52,20 @@ export default function MaterialsView(): ReactElement {
       : setShowedMaterial(materialData);
   };
 
+
+
+  const child = () => {
+    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
+  }
+
+
   const headerAttributes = {
     title: "materiales",
     enableSearch: true,
     icon: "material.svg",
     searchPlaceholder: "Buscar Material",
     searchCallback: onSearchResult,
+    children: child()
   };
 
   return (

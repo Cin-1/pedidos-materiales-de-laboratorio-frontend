@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { Children, ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
@@ -7,7 +7,7 @@ import useSharedService from "../../services/shared.service";
 import handlePromise from "../../utils/promise";
 import { Equipment } from "../../types/equipment";
 import Dropdown from "../../components/dropdown";
-import { Fab } from "@mui/material";
+import { Button, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { SelectOptions } from "../../types/shared";
@@ -50,12 +50,18 @@ export default function EquipmentsView(): ReactElement {
       : setShowedEquipment(equipmentData);
   };
 
+  const child = () => {
+    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
+  }
+
+
   const headerAttributes = {
     title: "equipos",
     enableSearch: true,
     icon: "equipment.svg",
     searchPlaceholder: "Buscar Equipo",
     searchCallback: onSearchResult,
+    children:  child()
   };
 
   return (
