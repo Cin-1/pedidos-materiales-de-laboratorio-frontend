@@ -9,7 +9,6 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import ForgotPassword from "./ForgotPassword";
 import { CancelOutlined, EditOutlined } from "@mui/icons-material";
 import useUserService from "../../services/user.service";
 import handlePromise from "../../utils/promise";
@@ -36,7 +35,6 @@ export default function ProfileCard() {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [NombreError, setNombreError] = React.useState(false);
   const [NombreErrorMessage, setNombreErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
   const [editProfile, setEditProfile] = React.useState(false);
   const [userData, setUserData] = React.useState({ nombre: "", apellido: "", email: "", dni: 0 });
 
@@ -65,13 +63,6 @@ export default function ProfileCard() {
     fetchMaterials();
   }, []);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleEdit = () => {
     setEditProfile(!editProfile);
   };
@@ -200,7 +191,6 @@ export default function ProfileCard() {
           />
         </FormControl>
 
-        <ForgotPassword open={open} handleClose={handleClose} />
         {editProfile && (
           <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
             Actualizar perfil
@@ -208,11 +198,7 @@ export default function ProfileCard() {
         )}
       </Box>
       <Divider></Divider>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <Link component="button" type="button" onClick={handleClickOpen} variant="body2" sx={{ alignSelf: "center" }}>
-          ¿Olvidaste tu contraseña?
-        </Link>
-      </Box>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Link
           component="button"
