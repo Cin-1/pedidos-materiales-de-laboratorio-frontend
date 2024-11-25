@@ -62,7 +62,7 @@ const useReactiveService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/reactive/${id}`,
-      data: { reactive },
+      data: reactive ,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));

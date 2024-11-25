@@ -93,7 +93,7 @@ console.log(formData)
       _id: id ,
       description:   description,
       cas:   cas,
-      Stock:  Number(stock),
+      stock:  Number(stock),
       isAvailable: true,
     };
 
