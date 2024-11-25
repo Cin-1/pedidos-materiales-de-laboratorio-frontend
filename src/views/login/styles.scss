@@ -1,0 +1,80 @@
+@import "../../globals.scss";
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  gap: 2em;
+  background-color: rgba($color: #000000, $alpha: 0.2);
+  padding: 20px;
+  border-radius: 5px;
+
+  small {
+    font-size: medium;
+    color: red;
+  }
+}
+
+.formEndStyle {
+  background-color: color("background");
+  height: 65%;
+  width: 98vw;
+  align-items: center;
+  justify-content: center;
+  @include breakpoint(small) {
+    width: 100vw;
+    border-top-left-radius: 8%;
+    border-top-right-radius: 8%;
+  }
+}
+
+.bannerStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2b76ff;
+  width: 100vw;
+  height: 50%;
+  @include breakpoint(small) {
+    margin-bottom: -25px;
+  }
+}
+
+.logoUniStyle {
+  text-align: center;
+}
+
+.imageStyle {
+  z-index: 10;  
+  margin-top: 5%;
+  max-height: 65%;
+  max-width:  65%;
+
+  @include breakpoint(small) {
+    margin-top: 15%;
+      }
+
+}
+
+.containerStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.textFieldStyle {
+  width: 90vw;
+  margin-top: 40px;
+  max-width: 75%;
+}
+
+.buttonStyle {
+  border-radius: 8px;
+  text-transform: none;
+  background-color: #2b76ff;
+  padding: 12px;
+  color: white;
+  width: 90vw;
+  margin-top: 20px;
+}

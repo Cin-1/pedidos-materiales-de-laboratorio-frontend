@@ -1,0 +1,40 @@
+@use "sass:map";
+
+$palette: (
+  text-primary: #202020,
+  text-secondary: #747474,
+
+  background: #f8f8fc,
+  background-dark: #1f232f,
+  background-light: #fff,
+  accent: #4a6088,
+  accent-dark: #212044,
+  accent-light: #78a7fe,
+  separator: #00000026,
+  outline: #373e4e,
+  scroll: #373e4e,
+  box-shadow: #959da533,
+);
+
+$radius: 5px;
+$padding: 20px;
+
+@function color($colorName) {
+  @return map.get($map: $palette, $key: $colorName);
+}
+
+@mixin breakpoint($point) {
+  @if $point == small {
+    @media (max-width: 650px) {
+      @content;
+    }
+  } @else if $point == medium {
+    @media (max-width: 900px) {
+      @content;
+    }
+  } @else if $point == large {
+    @media (max-width: 1200px) {
+      @content;
+    }
+  }
+}

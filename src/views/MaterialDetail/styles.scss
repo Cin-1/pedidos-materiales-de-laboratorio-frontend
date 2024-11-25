@@ -1,0 +1,33 @@
+@import "../../globals.scss";
+
+.fbuttons {
+  display: none;
+  @include breakpoint(small) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.buttons {
+  @include breakpoint(small) {
+    display: none;
+  }
+}
+
+.listElements {
+  padding: 8px 8px;
+}
+
+.formEndStyle {
+  display: flex;
+  justify-content: center;
+  padding-left: 0%;
+  padding-right: 0%;
+  max-width: 100%;
+}
+
+.formElement {
+  width: 80%;
+}
