@@ -193,20 +193,14 @@ export default function MaterialDetailView(): ReactElement {
             value={Repair}
           />
           <div className="buttons">
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" color="success">
               Grabar
             </Button>
 
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                onDelete();
-              }}
-            >
+            <Button  variant="contained" onClick={(e) => {onDelete()}} color="error">
               Borrar
             </Button>
           </div>
-
           <div className="fbuttons">
             <div style={{ marginRight: "1rem" }}>
               <Fab color="success" aria-label="save" type="submit">

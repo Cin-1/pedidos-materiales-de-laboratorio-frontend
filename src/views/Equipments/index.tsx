@@ -71,10 +71,10 @@ export default function EquipmentsView(): ReactElement {
                 title={m.description}
                 icon={true}
                 desplegado={selectedid == m._id}
-                description={TypeOptions.find((t) => t.value == m.type)?.text || ""}
+                description={m.description}
+                tipo={TypeOptions.find((t) => t.value == m.type)?.text || ""}
                 stock={m.stock?.toString() || "0"}
                 repair={m.inRepair?.toString() || "0"}
-                clase={""}
                 onClick={() => (selectedid == m._id ? setSelectedid("") : setSelectedid(m._id))}
                 onEdition={() => navigate(`/equipments/${m._id}`)}
               />

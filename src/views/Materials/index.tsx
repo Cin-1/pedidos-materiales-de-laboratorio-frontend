@@ -78,7 +78,7 @@ export default function MaterialsView(): ReactElement {
                 description={m.description}
                 stock={m.stock?.toString() || "0"}
                 repair={m.inRepair?.toString() || ""}
-                clase={TypeOptions.find((t) => t.value == m.type)?.text || ""}
+                tipo={TypeOptions.find((t) => t.value == m.type)?.text || ""}
                 onClick={() => (selectedid == m._id ? setSelectedid("") : setSelectedid(m._id))}
                 onEdition={() => navigate(`/materials/${m._id}`)}
               />

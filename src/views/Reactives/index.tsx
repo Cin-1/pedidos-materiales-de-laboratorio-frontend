@@ -76,8 +76,7 @@ export default function ReactivesView(): ReactElement {
                           desplegado= {selectedid == m._id}
                           description= {m.description}
                           stock= {m.stock?.toString() || '0' }
-                          repair= { ''}
-                          clase= {''}
+                          cas= {m.cas}
                           onClick={() => selectedid == m._id ?  setSelectedid(""): setSelectedid(m._id)}
                           onEdition={() =>     navigate(`/reactives/${m._id}`)} 
                         />  
