@@ -28,40 +28,20 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function ProfileCard() {
-  const userService = useUserService();
   const authService = useAuth();
+  const { getUser } = useUserService();
+  const [userInfo, setUserInfo] = React.useState({ email: "", nombre: "", apellido: "", dni: 0 });
 
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [NombreError, setNombreError] = React.useState(false);
-  const [NombreErrorMessage, setNombreErrorMessage] = React.useState("");
+  const getUserInfo = async (id: string) => {
+    const [res, err] = await handlePromise<any, any>(getUser(id));
+    if (err) {
+      return;
+    }
+    setUserInfo({ email: res.email, nombre: res.name, apellido: res.lastName, dni: res.dni });
+    return;
+  };
+
   const [editProfile, setEditProfile] = React.useState(false);
-  const [userData, setUserData] = React.useState({ nombre: "", apellido: "", email: "", dni: 0 });
-
-  React.useEffect(() => {
-    const fetchMaterials = async () => {
-      try {
-        //ver como traer esto
-        const [userData, err] = await handlePromise(userService.getUser("id"));
-
-        if (err) {
-          throw err;
-        }
-        if (userData) {
-          setUserData({
-            nombre: userData.name || "",
-            apellido: userData.lastName || "",
-            email: userData.email || "",
-            dni: userData.dni || 0,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchMaterials();
-  }, []);
 
   const handleEdit = () => {
     setEditProfile(!editProfile);
@@ -72,7 +52,7 @@ export default function ProfileCard() {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || NombreError) {
+    if (!userInfo) {
       event.preventDefault();
       return;
     }
@@ -80,9 +60,9 @@ export default function ProfileCard() {
 
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
       Nombre: data.get("Nombre"),
-      apellido: data.get("apellido"),
+      apellido: data.get("Apellido"),
+      dni: data.get("Dni"),
     });
   };
 
@@ -90,6 +70,10 @@ export default function ProfileCard() {
     const isValid = true;
     return isValid;
   };
+  React.useEffect(() => {
+    //ACTUALIZAR
+    getUserInfo("id");
+  }, []);
 
   return (
     <Card variant="outlined">
@@ -116,18 +100,16 @@ export default function ProfileCard() {
           <FormLabel htmlFor="email">Email</FormLabel>
           <TextField
             disabled
-            error={emailError}
-            helperText={emailErrorMessage}
+            error={false}
             id="email"
             type="email"
             name="your@email.com"
-            placeholder={userData.email}
+            placeholder={userInfo.email}
             autoComplete="email"
             autoFocus
             required
             fullWidth
             variant="outlined"
-            color={emailError ? "error" : "primary"}
           />
         </FormControl>
         <FormControl>
@@ -136,10 +118,9 @@ export default function ProfileCard() {
           </Box>
           <TextField
             disabled={!editProfile}
-            error={NombreError}
-            helperText={NombreErrorMessage}
+            error={false}
             name="Nombre"
-            placeholder={userData.nombre}
+            placeholder={userInfo.nombre}
             type="Nombre"
             id="Nombre"
             autoComplete="current-Nombre"
@@ -147,19 +128,17 @@ export default function ProfileCard() {
             required
             fullWidth
             variant="outlined"
-            color={NombreError ? "error" : "primary"}
           />
         </FormControl>
         <FormControl>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormLabel htmlFor="Nombre">Apellido</FormLabel>
+            <FormLabel htmlFor="Apellido">Apellido</FormLabel>
           </Box>
           <TextField
             disabled={!editProfile}
-            error={NombreError}
-            helperText={NombreErrorMessage}
+            error={false}
             name="Apellido"
-            placeholder={userData.apellido}
+            placeholder={userInfo.apellido}
             type="Nombre"
             id="Nombre"
             autoComplete="current-Nombre"
@@ -167,19 +146,17 @@ export default function ProfileCard() {
             required
             fullWidth
             variant="outlined"
-            color={NombreError ? "error" : "primary"}
           />
         </FormControl>
         <FormControl>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormLabel htmlFor="Nombre">Dni</FormLabel>
+            <FormLabel htmlFor="Dni">Dni</FormLabel>
           </Box>
           <TextField
             disabled={!editProfile}
-            error={NombreError}
-            helperText={NombreErrorMessage}
+            error={false}
             name="Dni"
-            placeholder={userData.dni.toString()}
+            placeholder={userInfo.dni.toString()}
             type="Dni"
             id="Dni"
             autoComplete="current-Dni"
@@ -187,7 +164,6 @@ export default function ProfileCard() {
             required
             fullWidth
             variant="outlined"
-            color={NombreError ? "error" : "primary"}
           />
         </FormControl>
 
