@@ -196,10 +196,17 @@ export default function MaterialDetailView(): ReactElement {
             <Button type="submit" variant="contained" color="success">
               Grabar
             </Button>
-
-            <Button  variant="contained" onClick={(e) => {onDelete()}} color="error">
-              Borrar
-            </Button>
+            {id !== "New" ? (
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  onDelete();
+                }}
+                color="error"
+              >
+                Borrar
+              </Button>
+            ) : null}
           </div>
           <div className="fbuttons">
             <div style={{ marginRight: "1rem" }}>

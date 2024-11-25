@@ -13,8 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Delete, Save } from "@mui/icons-material";
-import useSharedService from '../../services/shared.service'
+import { Cancel, Delete, Save } from "@mui/icons-material";
+import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
 
 export default function EquipmentDetailView(): ReactElement {
@@ -23,33 +23,35 @@ export default function EquipmentDetailView(): ReactElement {
   const [equipmentData, setEquipmentData] = useState<Equipment>();
   const equipmentService = useEquipmentService();
   const [description, setDescription] = useState("");
-  
+
   const [type, setType] = useState("");
   const [Stock, setStock] = useState("");
   const [Repair, setRepair] = useState("");
-  const [UnitMeasure,setUnit] = useState("");
+  const [UnitMeasure, setUnit] = useState("");
 
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
 
-
   useEffect(() => {
     const fetchEquipments = async () => {
-
       const [Types, err2] = await handlePromise(sharedService.getEquipmentTypes());
-      if (err2) {throw err2;}
-      if(Types) {setTypeOptions(Types)}
+      if (err2) {
+        throw err2;
+      }
+      if (Types) {
+        setTypeOptions(Types);
+      }
 
-      if (id && !(id =='New')) {
+      if (id && !(id == "New")) {
         try {
           const [equipment, err] = await handlePromise(equipmentService.getEquipment(id));
-         
+
           if (equipment) {
             setEquipmentData(equipment);
             setDescription(equipment.description);
             setType(equipment.type);
             setRepair(equipment.inRepair.toString());
-            setStock((equipment.stock.toString()));
+            setStock(equipment.stock.toString());
             setUnit(equipment.unitMeasure);
           }
         } catch (error) {
@@ -61,7 +63,6 @@ export default function EquipmentDetailView(): ReactElement {
     fetchEquipments();
   }, []);
 
-  
   const headerAttributes = {
     title: "Equipo",
     enableSearch: false,
@@ -70,40 +71,34 @@ export default function EquipmentDetailView(): ReactElement {
     searchPlaceholder: "Buscar Equipo",
   };
 
- const onDelete = async(): Promise<void> =>
-     {
-        if (id) {
-          const [, err] = await handlePromise<void, string>(equipmentService.removeEquipment(id), );
-          if (err) return console.log(err);
-          navigate(-1);
-      }
-     }
+  const onDelete = async (): Promise<void> => {
+    if (id) {
+      const [, err] = await handlePromise<void, string>(equipmentService.removeEquipment(id));
+      if (err) return console.log(err);
+      navigate(-1);
+    }
+  };
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
-   const  newEquipment : createEquipment= {
-        description: description,
-        stock: Number(Stock),
-        type:type,
-        inRepair: Number(Repair),
-        unitMeasure: UnitMeasure,
-        isAvailable : true
-      }
-      
-     
+    const newEquipment: createEquipment = {
+      description: description,
+      stock: Number(Stock),
+      type: type,
+      inRepair: Number(Repair),
+      unitMeasure: UnitMeasure,
+      isAvailable: true,
+    };
+
     if (equipmentData && id) {
-        const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment ),
-      );
+      const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment));
       if (err) return console.log(err);
       navigate(-1);
     } else {
-     
-      const [, err] = await handlePromise<void, string>(
-        equipmentService.addEquipment(newEquipment), 
-      );
+      const [, err] = await handlePromise<void, string>(equipmentService.addEquipment(newEquipment));
       if (err) return console.log(err);
-      navigate(-1); 
+      navigate(-1);
     }
   };
 
@@ -125,21 +120,18 @@ export default function EquipmentDetailView(): ReactElement {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-          <FormControl className="formElement">
+            <FormControl className="formElement">
               <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={type ?? ''}
+                value={type ?? ""}
                 label="Tipo"
                 onChange={(e) => setType(e.target.value as string)}
               >
-                {
-                  TypeOptions.map((t,index) => 
-                    <MenuItem value={t.value }>{t.text }</MenuItem>
-                  )         
-                }
-                
+                {TypeOptions.map((t, index) => (
+                  <MenuItem value={t.value}>{t.text}</MenuItem>
+                ))}
               </Select>
             </FormControl>
 
@@ -157,39 +149,61 @@ export default function EquipmentDetailView(): ReactElement {
               </Select>
             </FormControl>
 
-
-          <TextField id="Stock" className="formElement" label="Stock" variant="outlined" 
-                        onChange={(e) => setStock(e.target.value)}
-                        value={Stock}
+            <TextField
+              id="Stock"
+              className="formElement"
+              label="Stock"
+              variant="outlined"
+              onChange={(e) => setStock(e.target.value)}
+              value={Stock}
             />
-            <TextField id="En Reparacion" className="formElement" label="En Reparacion" variant="outlined" 
-                        onChange={(e) => setRepair(e.target.value)}
-                        value={Repair}
-              />
+            <TextField
+              id="En Reparacion"
+              className="formElement"
+              label="En Reparacion"
+              variant="outlined"
+              onChange={(e) => setRepair(e.target.value)}
+              value={Repair}
+            />
 
             <div className="buttons">
               <Button type="submit" variant="contained" color="success">
                 Grabar
               </Button>
 
-              <Button  variant="contained" onClick={(e) => {onDelete()}} color="error">
-                Borrar
-              </Button>
+              {id !== "New" ? (
+                <Button
+                  variant="contained"
+                  onClick={(e) => {
+                    onDelete();
+                  }}
+                  color="error"
+                >
+                  Borrar
+                </Button>
+              ) : null}
             </div>
 
             <div className="fbuttons">
               <div style={{ marginRight: "1rem" }}>
-                <Fab color="success" aria-label="save" type="submit"  >
+                <Fab color="success" aria-label="save" type="submit">
                   <Save />
                 </Fab>
               </div>
 
-              {id!="New"? 
-              <Fab color="error" aria-label="borrar" onClick={(e) => {onDelete()}}>
-                <Delete />
-              </Fab>:
-              <div/>}
-              
+              {id != "New" ? (
+                <Fab
+                  color="error"
+                  aria-label="borrar"
+                  onClick={(e) => {
+                    onDelete();
+                  }}
+                >
+                  <Cancel />
+                </Fab>
+              ) : (
+                <div />
+              )}
             </div>
           </form>
         </div>
