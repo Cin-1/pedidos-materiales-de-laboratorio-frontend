@@ -52,13 +52,12 @@ export default function MaterialsView(): ReactElement {
       : setShowedMaterial(materialData);
   };
 
-
   const headerAttributes = {
     title: "materiales",
     enableSearch: true,
     icon: "material.svg",
     searchPlaceholder: "Buscar Material",
-    searchCallback: onSearchResult
+    searchCallback: onSearchResult,
   };
 
   return (
@@ -67,7 +66,11 @@ export default function MaterialsView(): ReactElement {
 
       <main>
         <div className="body">
-          <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
+          <div className="newFormButton">
+            <Button variant="contained" size="medium" onClick={() => navigate("New")}>
+              Crear {headerAttributes.title}
+            </Button>
+          </div>{" "}
           {showedMaterial.map((m, index) => (
             <div className="listElements">
               <Dropdown

@@ -14,17 +14,22 @@ form {
   }
 }
 
-
-.listElements{
+.listElements {
   padding: 8px 8px;
 }
 
-
-.fbuttons{
+.fbuttons {
   position: fixed;
   bottom: 0;
   right: 0;
   height: 60px;
   padding: 0% 5% 15%;
-  
+}
+.newFormButton {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 1em;
+  @include breakpoint(small) {
+    display: none;
+  }
 }

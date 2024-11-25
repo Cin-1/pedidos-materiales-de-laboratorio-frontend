@@ -11,7 +11,6 @@ const useUserService = () => {
       method: "GET",
       url: `/user/${id}`,
     };
-
     const [response, err] = await handlePromise<AxiosResponse<User>, unknown>(axiosInstance(config));
 
     if (err) {

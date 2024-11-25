@@ -55,7 +55,7 @@ export default function EquipmentsView(): ReactElement {
     enableSearch: true,
     icon: "equipment.svg",
     searchPlaceholder: "Buscar Equipo",
-    searchCallback: onSearchResult
+    searchCallback: onSearchResult,
   };
 
   return (
@@ -63,7 +63,11 @@ export default function EquipmentsView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <div className="body">
-         <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
+          <div className="newFormButton">
+            <Button variant="contained" size="medium" onClick={() => navigate("New")}>
+              Crear {headerAttributes.title}
+            </Button>
+          </div>{" "}
           {showedEquipment.map((m, index) => (
             <div className="listElements">
               <Dropdown

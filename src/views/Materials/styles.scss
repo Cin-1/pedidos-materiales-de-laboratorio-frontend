@@ -24,3 +24,11 @@
     padding-bottom: 6vh;
   }
 }
+.newFormButton {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 1em;
+  @include breakpoint(small) {
+    display: none;
+  }
+}

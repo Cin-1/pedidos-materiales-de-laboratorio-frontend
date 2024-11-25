@@ -7,12 +7,14 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import { CancelOutlined, EditOutlined } from "@mui/icons-material";
 import useUserService from "../../services/user.service";
 import handlePromise from "../../utils/promise";
 import { useAuth } from "../../context/auth.context";
+import { User } from "../../types/user";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -28,17 +30,20 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function ProfileCard() {
-  const authService = useAuth();
+  const { logout, getTokenInfo } = useAuth();
   const { getUser } = useUserService();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = React.useState({ email: "", nombre: "", apellido: "", dni: 0 });
-
-  const getUserInfo = async (id: string) => {
-    const [res, err] = await handlePromise<any, any>(getUser(id));
-    if (err) {
+  const idUser = getTokenInfo()?.id;
+  const getUserInfo = async () => {
+    if (idUser) {
+      const [res, err] = await handlePromise<User, any>(getUser(idUser));
+      if (err || !res) {
+        return;
+      }
+      setUserInfo({ email: res.email, nombre: res.name, apellido: res.lastName, dni: res.dni });
       return;
     }
-    setUserInfo({ email: res.email, nombre: res.name, apellido: res.lastName, dni: res.dni });
-    return;
   };
 
   const [editProfile, setEditProfile] = React.useState(false);
@@ -48,7 +53,8 @@ export default function ProfileCard() {
   };
 
   const handleCloseSession = () => {
-    authService.logout();
+    logout();
+    navigate("/login");
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -71,8 +77,7 @@ export default function ProfileCard() {
     return isValid;
   };
   React.useEffect(() => {
-    //ACTUALIZAR
-    getUserInfo("id");
+    getUserInfo();
   }, []);
 
   return (
