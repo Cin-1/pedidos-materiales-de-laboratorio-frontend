@@ -31,6 +31,8 @@ function App() {
           <Route index path="/login" element={<Login />} />
           <Route index path="/register/:token" element={<Register />} />
           {/**/}
+          <Route path="/profile" element={<UserProfile />} />
+
           <Route element={<PrivateRoute />}>
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
@@ -44,8 +46,6 @@ function App() {
               <Route path="/Reactives/" element={<ReactivesView />} />
               <Route path="/Reactives/:id" element={<ReactivesDetailsView />} />
             </Route>
-
-            <Route path="/profile" element={<UserProfile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
