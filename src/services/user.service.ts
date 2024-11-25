@@ -57,12 +57,13 @@ const useUserService = () => {
     }
   };
 
-  const updateUser = async (id: string, user: User): Promise<void> => {
+  const updateUser = async (user: User): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
-      url: `/user/${id}`,
-      data: { user },
+      url: `/user`,
+      data: user,
     };
+    console.log(user);
 
     const [, err] = await handlePromise<AxiosResponse<User[]>, unknown>(axiosInstance(config));
 

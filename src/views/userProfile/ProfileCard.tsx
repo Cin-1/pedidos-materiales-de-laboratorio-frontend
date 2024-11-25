@@ -31,19 +31,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function ProfileCard() {
   const { logout, getTokenInfo } = useAuth();
-  const { getUser } = useUserService();
+  const { updateUser } = useUserService();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = React.useState({ email: "", nombre: "", apellido: "", dni: 0 });
-  const idUser = getTokenInfo()?.id;
-  const getUserInfo = async () => {
-    if (idUser) {
-      const [res, err] = await handlePromise<User, any>(getUser(idUser));
-      if (err || !res) {
-        return;
-      }
-      setUserInfo({ email: res.email, nombre: res.name, apellido: res.lastName, dni: res.dni });
+
+  const updateUserInfo = async (data) => {
+    const [res, err] = await handlePromise<void, any>(updateUser(data));
+    if (err) {
       return;
     }
+    setEditProfile(false);
+
+    return;
   };
 
   const [editProfile, setEditProfile] = React.useState(false);
@@ -65,10 +64,9 @@ export default function ProfileCard() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    console.log({
-      Nombre: data.get("Nombre"),
-      apellido: data.get("Apellido"),
-      dni: data.get("Dni"),
+    updateUserInfo({
+      name: data.get("Nombre"),
+      lastName: data.get("Apellido"),
     });
   };
 
@@ -77,7 +75,13 @@ export default function ProfileCard() {
     return isValid;
   };
   React.useEffect(() => {
-    getUserInfo();
+    const user = getTokenInfo();
+    setUserInfo({
+      email: user?.email || "",
+      nombre: user?.name || "",
+      apellido: user?.lastName || "",
+      dni: 0,
+    });
   }, []);
 
   return (
@@ -162,7 +166,7 @@ export default function ProfileCard() {
             <FormLabel htmlFor="Dni">Dni</FormLabel>
           </Box>
           <TextField
-            disabled={!editProfile}
+            disabled={true}
             error={false}
             name="Dni"
             placeholder={userInfo.dni.toString()}

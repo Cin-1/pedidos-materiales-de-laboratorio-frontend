@@ -47,11 +47,11 @@ export default function Header({
     }).then((result) => {
       if (result.isConfirmed) {
         logout();
-        console.log("Sesión cerrada");
-        Swal.fire("¡Cerraste sesión!", "Tu sesión ha sido cerrada correctamente.", "success");
+        Swal.fire("¡Cerraste sesión!", "Tu sesión ha sido cerrada correctamente.", "success").then(() => {
+          navigate("/login");
+        });
       }
     });
-    navigate("/login");
   };
 
   return (
