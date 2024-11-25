@@ -1,7 +1,7 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
 import { User } from "../types/user";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const useUserService = () => {
   const { axiosInstance } = useAxios();
@@ -85,7 +85,31 @@ const useUserService = () => {
     }
   };
 
+  const createToken = async (): Promise<any> => {
+    const config: AxiosRequestConfig = {
+      method: "POST",
+      url: `/auth/register/token`,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+      },
+    };
+
+    const [response, err] = await handlePromise<AxiosResponse<any>, AxiosError<any>>(axiosInstance(config));
+
+    if (err) {
+      const msg = err.response?.data?.message || "there was a problem sending the request";
+      return Promise.reject(msg);
+    }
+
+    if (!response) {
+      return Promise.reject("Login response is empty"); /* Fixme: throw a better error */
+    }
+    return response.data;
+  };
+
   return {
+    createToken,
     getUser: getUser,
     getUsers,
     addUser,

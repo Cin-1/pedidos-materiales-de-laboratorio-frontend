@@ -2,7 +2,7 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 import SignInCard from "./ProfileCard";
-import Content from "./Content";
+import Content from "./AdminPanel";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
 
@@ -25,7 +25,7 @@ export default function UserProfile() {
           {
             justifyContent: "center",
             height: "calc((1 - var(--template-frame-height, 0)) * 100%)",
-            marginTop: "max(40px - var(--template-frame-height, 0px), 0px)",
+            marginTop: "max(20px - var(--template-frame-height, 0px), 0px)",
             minHeight: "100%",
           },
           (theme) => ({

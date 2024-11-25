@@ -2,6 +2,7 @@ import React, { FormEvent, ReactElement, useState } from "react";
 import handlePromise from "../../utils/promise";
 import { useAuthService } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import Link from "@mui/material/Link";
 import "./styles.scss";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/EmailOutlined";
@@ -12,10 +13,14 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { validateForm } from "./valideForm";
 import IconButton from "@mui/material/IconButton";
+import { Box } from "@mui/material";
+import ForgotPassword from "./ForgotPassword";
 
 export default function Login(): ReactElement {
   const { login } = useAuthService();
   const [error, setError] = useState("");
+  const [open, setOpen] = React.useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -37,6 +42,12 @@ export default function Login(): ReactElement {
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const emailInputProps = {
@@ -90,7 +101,11 @@ export default function Login(): ReactElement {
           Iniciar Sesión
         </Button>
         {error && <small>{error}</small>}
+        <Link component="button" type="button" onClick={handleClickOpen} variant="body2" sx={{ alignSelf: "center" }}>
+          ¿Olvidaste tu contraseña?
+        </Link>
       </form>
+      <ForgotPassword open={open} handleClose={handleClose} />
     </div>
   );
 }
