@@ -70,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/js-cookie": "^3.0.6",
     "ajv": "^7.2.4",
     "eslint": "^8.2.0",
