@@ -48,7 +48,6 @@ export default function AdminPanel() {
     setModalContent({ title, content, open: true });
     setOpen(true);
   };
-  console.log(open);
   const handleClose = () => {
     setOpen(false);
     setModalContent({ title: "", content: "", open: false });
@@ -95,7 +94,7 @@ export default function AdminPanel() {
   return (
     <Stack sx={{ flexDirection: "column", gap: 4, maxWidth: 580 }}>
       <Box sx={{ display: { xs: "none", md: "flex" } }}></Box>
-      <Typography variant="h5" component="h2">
+      <Typography variant="h4" component="h2">
         Panel del administrador
       </Typography>
 

@@ -167,7 +167,7 @@ export default function MaterialDetailView(): ReactElement {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={type}
-              label="unidad de Medida"
+              label="Tipo"
               onChange={(e) => settype(e.target.value as string)}
             >
               {TypeOptions.map((t, index) => (

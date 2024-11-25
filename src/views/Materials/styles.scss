@@ -18,3 +18,9 @@
   height: 60px;
   padding: 0% 5% 15%;
 }
+.body {
+  padding-bottom: 15vh;
+  @include breakpoint(small) {
+    padding-bottom: 6vh;
+  }
+}

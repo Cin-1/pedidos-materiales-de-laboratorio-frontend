@@ -1,5 +1,5 @@
 import React, { ReactElement, HTMLAttributeAnchorTarget } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export type NavButtonProps = {
   href: string;
@@ -9,11 +9,12 @@ export type NavButtonProps = {
 };
 
 export default function NavButton({ href, icon, target, name }: NavButtonProps): ReactElement {
-  const loweCaseName = name.toLocaleLowerCase();
+  const lowerCaseName = name.toLocaleLowerCase();
+
   return (
-    <Link to={href} className="nav__button" target={target || "_self"}>
-      <img className="nav-icon" src={`img/nav/${icon}`} alt="nav-button-image" />
-      <span>{loweCaseName}</span>
-    </Link>
+    <NavLink to={href} className={"nav__button"} target={target || "_self"}>
+      <img className="nav-icon" src={`/img/nav/${icon}`} alt="nav-button-image" />
+      <span>{lowerCaseName}</span>
+    </NavLink>
   );
 }

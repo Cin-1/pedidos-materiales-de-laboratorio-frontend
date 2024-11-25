@@ -79,7 +79,11 @@ export default function ProfileCard() {
     <Card variant="outlined">
       <Box sx={{ display: { xs: "flex", md: "none" } }}></Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography component="h1" variant="h4" sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: "100%", display: "flex", justifyContent: "center", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+        >
           Mi perfil
         </Typography>
         <Button
