@@ -168,12 +168,12 @@ export default function EquipmentDetailView(): ReactElement {
               />
 
             <div className="buttons">
-              <Button type="submit" variant="contained">
+              <Button type="submit" variant="contained" color="success">
                 Grabar
               </Button>
 
-              <Button  variant="contained" onClick={(e) => {onDelete()}}>
-                borrar
+              <Button  variant="contained" onClick={(e) => {onDelete()}} color="error">
+                Borrar
               </Button>
             </div>
 

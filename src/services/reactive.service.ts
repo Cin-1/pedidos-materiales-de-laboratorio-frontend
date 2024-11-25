@@ -1,6 +1,6 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { Reactive } from "../types/reactive";
+import { Reactive ,dtoReactive } from "../types/reactive";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const useReactiveService = () => {
@@ -44,7 +44,7 @@ const useReactiveService = () => {
     return response.data;
   };
 
-  const addReactive = async (reactive: Reactive): Promise<void> => {
+  const addReactive = async (reactive: dtoReactive): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/reactive`,
@@ -62,7 +62,7 @@ const useReactiveService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/reactive/${id}`,
-      data: { reactive },
+      data: reactive ,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));

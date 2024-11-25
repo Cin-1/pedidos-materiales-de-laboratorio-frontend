@@ -50,18 +50,12 @@ export default function EquipmentsView(): ReactElement {
       : setShowedEquipment(equipmentData);
   };
 
-  const child = () => {
-    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
-  }
-
-
   const headerAttributes = {
     title: "equipos",
     enableSearch: true,
     icon: "equipment.svg",
     searchPlaceholder: "Buscar Equipo",
-    searchCallback: onSearchResult,
-    children:  child()
+    searchCallback: onSearchResult
   };
 
   return (
@@ -69,6 +63,7 @@ export default function EquipmentsView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <div className="body">
+         <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
           {showedEquipment.map((m, index) => (
             <div className="listElements">
               <Dropdown
@@ -76,10 +71,10 @@ export default function EquipmentsView(): ReactElement {
                 title={m.description}
                 icon={true}
                 desplegado={selectedid == m._id}
-                description={TypeOptions.find((t) => t.value == m.type)?.text || ""}
+                description={m.description}
+                tipo={TypeOptions.find((t) => t.value == m.type)?.text || ""}
                 stock={m.stock?.toString() || "0"}
                 repair={m.inRepair?.toString() || "0"}
-                clase={""}
                 onClick={() => (selectedid == m._id ? setSelectedid("") : setSelectedid(m._id))}
                 onEdition={() => navigate(`/equipments/${m._id}`)}
               />

@@ -10,8 +10,10 @@ export type dropProps = {
   desplegado: boolean;
   description: string;
   stock: string;
-  repair: string;
-  clase: string;
+  repair?: string;
+  clase?: string;
+  tipo?: string;
+  cas?: string;
   onClick?: () => void;
   onEdition?: () => void;
 };
@@ -24,6 +26,8 @@ export default function Dropdown({
   stock,
   repair,
   clase,
+  tipo,
+  cas,
   onClick,
   onEdition,
 }: dropProps): ReactElement {
@@ -63,7 +67,9 @@ export default function Dropdown({
                   <p>En reparación: {repair}</p>
                 </div>
                 <div>
-                  <p> Clase: {clase}</p>
+                 {clase ?  <p> Clase: {clase}</p>  : "" } 
+                 {tipo ?  <p> Tipo: {tipo}</p>  : "" } 
+                 {cas ?  <p> C.A.S: {cas}</p> : "" } 
                 </div>
               </div>
             </div>
