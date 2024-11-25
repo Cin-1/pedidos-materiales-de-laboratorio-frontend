@@ -5,7 +5,13 @@ export type Reactive = SoftDelete & {
   _id:string;
   description: string;
   cas: string;
+  stock: String;
+  isAvailable: boolean;
+};
+
+export type dtoReactive = SoftDelete & {
+  description: string;
+  cas: string;
   stock?: number;
-  inUse: InUse[];
   isAvailable: boolean;
 };

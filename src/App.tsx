@@ -19,6 +19,7 @@ import EquipmentDetailsView from "./views/EquipmentDetail";
 import EquipmentsView from "./views/Equipments";
 import UserProfile from "./views/userProfile/UserProfile";
 import ReactivesView from "./views/Reactives";
+import ReactivesDetailsView from  "./views/ReactiveDetail";
 
 function App() {
   const [text, useText] = useState([]);
@@ -41,6 +42,7 @@ function App() {
               <Route path="/equipments" element={<EquipmentsView />} />
               <Route path="/equipments/:id" element={<EquipmentDetailsView />} />
               <Route path="/Reactives/" element={<ReactivesView />} />
+              <Route path="/Reactives/:id" element={<ReactivesDetailsView />} />
             </Route>
 
             <Route path="/profile" element={<UserProfile />} />

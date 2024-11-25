@@ -8,7 +8,7 @@ import { Reactive } from "../../types/reactive";
 import { User } from "../../types/user";
 import  Dropdown  from "../../components/dropdown"
 import  useUserService  from "../../services/user.service"
-import { Fab } from "@mui/material";
+import { Button, Fab } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 import { SelectOptions } from "../../types/shared";
@@ -50,9 +50,6 @@ export default function ReactivesView(): ReactElement {
     input ? setShowedReactive(reactiveData.filter( m => m.description.toLowerCase().includes(input.toLowerCase()))):  setShowedReactive(reactiveData);
    }
 
-     const child = () => {
-    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
-  }
 
   
   const headerAttributes = {
@@ -61,15 +58,15 @@ export default function ReactivesView(): ReactElement {
     icon: 'reactive.svg',
     searchPlaceholder: 'Buscar Reactivo',
     searchCallback: onSearchResult,
-    children:  child()
+  
 
   }
 
   return <>
       <Header {...headerAttributes}></Header>
-    
       <main>
         <div  className="body">              
+                <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
                 { 
                 showedReactive.map((m,index) =>
                 <div className="listElements">

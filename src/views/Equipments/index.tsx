@@ -50,18 +50,12 @@ export default function EquipmentsView(): ReactElement {
       : setShowedEquipment(equipmentData);
   };
 
-  const child = () => {
-    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
-  }
-
-
   const headerAttributes = {
     title: "equipos",
     enableSearch: true,
     icon: "equipment.svg",
     searchPlaceholder: "Buscar Equipo",
-    searchCallback: onSearchResult,
-    children:  child()
+    searchCallback: onSearchResult
   };
 
   return (
@@ -69,6 +63,7 @@ export default function EquipmentsView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <div className="body">
+         <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
           {showedEquipment.map((m, index) => (
             <div className="listElements">
               <Dropdown

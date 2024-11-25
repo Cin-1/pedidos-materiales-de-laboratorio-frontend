@@ -8,7 +8,7 @@ import { Material } from "../../types/material";
 import { User } from "../../types/user";
 import Dropdown from "../../components/dropdown";
 import useUserService from "../../services/user.service";
-import { Fab } from "@mui/material";
+import { Button, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { SelectOptions } from "../../types/shared";
@@ -53,19 +53,12 @@ export default function MaterialsView(): ReactElement {
   };
 
 
-
-  const child = () => {
-    return (<Fab color="primary" aria-label="add" onClick={() => navigate("New")}><AddIcon /></Fab>)
-  }
-
-
   const headerAttributes = {
     title: "materiales",
     enableSearch: true,
     icon: "material.svg",
     searchPlaceholder: "Buscar Material",
-    searchCallback: onSearchResult,
-    children: child()
+    searchCallback: onSearchResult
   };
 
   return (
@@ -74,6 +67,7 @@ export default function MaterialsView(): ReactElement {
 
       <main>
         <div className="body">
+          <Button className="newForm" variant="contained" size="medium" onClick={() => navigate("New")} >Crear {headerAttributes.title}</Button>
           {showedMaterial.map((m, index) => (
             <div className="listElements">
               <Dropdown
