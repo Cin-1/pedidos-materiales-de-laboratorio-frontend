@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import history from "connect-history-api-fallback";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   css: {
     preprocessorOptions: {
@@ -14,5 +14,21 @@ export default defineConfig({
   build: {
     outDir: "dist", // Carpeta de salida para la build
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: "configure-server",
+      configureServer: (server) => {
+        server.middlewares.use(
+          history({
+            disableDotRule: true,
+            verbose: true,
+          }),
+        );
+      },
+    },
+  ],
+  server: {
+    middlewareMode: true,
+  },
 });
