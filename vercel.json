@@ -1,15 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
+      "src": "src/index.tsx",
+      "use": "@vercel/node"
     }
   ],
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/:match*",
-      "destination": "/index.html",
-      "permanent": false
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
