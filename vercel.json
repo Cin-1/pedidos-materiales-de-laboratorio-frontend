@@ -1,15 +1,19 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/index.tsx",
-      "use": "@vercel/node"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/recruit", "dest": "/index.html" },
+    { "src": "/tos", "dest": "/index.html" },
+    { "src": "/login", "dest": "/index.html" },
+    { "src": "/register/:token", "dest": "/index.html" },
+    { "src": "/requests", "dest": "/index.html" },
+    { "src": "/materials", "dest": "/index.html" },
+    { "src": "/materials/:id", "dest": "/index.html" },
+    { "src": "/equipments", "dest": "/index.html" },
+    { "src": "/equipments/:id", "dest": "/index.html" },
+    { "src": "/reactives", "dest": "/index.html" },
+    { "src": "/reactives/:id", "dest": "/index.html" },
+    { "src": "/profile", "dest": "/index.html" },
+    { "src": "/404", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
