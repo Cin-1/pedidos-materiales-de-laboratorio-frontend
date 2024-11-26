@@ -1,10 +1,12 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "src/index.tsx",
-      "use": "@vercel/node"
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "vite.config.js",
+      "use": "@vercel/vite"
     }
-  ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  ]
 }
